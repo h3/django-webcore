@@ -4,13 +4,8 @@ from django.conf import settings
 
 urlpatterns = patterns('',
     (r'^',  include('webcore.urls.robots')),
-    (r'^',  include('webcore.urls.sitemap')),
     (r'^',  include('webcore.urls.favicon')),
+    (r'^',  include('webcore.urls.ifdev')),
+#   (r'^',  include('webcore.urls.sitemap')), # Not useful enough.
 )
 
-if settings.DEV:
-    urlpatterns += patterns('',
-        (r'^media/(.*)$', 'django.views.static.serve', {
-            'document_root': settings.MEDIA_ROOT, 
-            'show_indexes': True}),
-    )
