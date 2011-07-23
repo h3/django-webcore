@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import *
 from django.conf import settings
-import colors
+from webcore.design import colors
 
 urlpatterns = patterns('',
 

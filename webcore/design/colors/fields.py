@@ -5,7 +5,7 @@ from django import forms
 from django.utils.text import capfirst
 
 
-from colors.widgets import ColorPickerWidget
+from webcore.design.colors.widgets import ColorPickerWidget
 
 class ColorField(models.CharField):
     def __init__(self, *args, **kwargs):
