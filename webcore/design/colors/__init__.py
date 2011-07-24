@@ -3,7 +3,7 @@ VERSION = (0, 0, 2, 'alpha', 0)
 # Most of this code is taken form from the Django project
 
 import os.path, re
-from webcore.design import colors
+
 
 def get_svn_revision(path=None):
     """
@@ -19,7 +19,7 @@ def get_svn_revision(path=None):
     """
     rev = None
     if path is None:
-        path = colors.__path__[0]
+        path = os.path.dirname(os.path.abspath(__file__))
     entries_path = '%s/.svn/entries' % path
 
     try:
