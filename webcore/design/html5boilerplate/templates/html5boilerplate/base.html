@@ -37,13 +37,14 @@
 
   {% block site.headstyles %}
   <link rel="stylesheet" href="{{ STATIC_URL }}html5boilerplate/css/style.css">
-  {% endblock %}
-
   {% block project.headstyles %}{% endblock%}
   {% block app.headstyles %}{% endblock%}
+  {% endblock %}
 
-  {% block document.headscripts %}{% endblock %}
+  {% block site.headscripts %}
+  {% block project.headscripts %}{% endblock %}
   {% block app.headscripts %}{% endblock %}
+  {% endblock %}
 
   {% endblock %}
 </head>
@@ -62,8 +63,10 @@
   {% block project.footer %}{% endblock %}
   {% endblock %}
   
+  {% block site.styles %}
   {% block project.styles %}{% endblock%}
   {% block app.styles %}{% endblock%}
+  {% endblock %}
 
   {% block site.scripts %}
   {# Javascript at the bottom for fast page loading #}
@@ -112,18 +115,8 @@
   </script>
   {% block project.scripts %}{% endblock%}
   {% block app.scripts %}{% endblock%}
+
   {% endblock%}
   {# block document.pngfix %}<!--[if lt IE 7 ]><script src="js/dd_belatedpng.js?v=1"></script><![endif]-->{% endblock #}
-  {# asynchronous google analytics: mathiasbynens.be/notes/async-analytics-snippet #}
-  {% block ga.script %}
-  <script>
-    var _gaq = [['_setAccount', '{% block ga.tracker %}{% endblock %}'], ['_trackPageview']];
-    (function(d, t) {
-        var g = d.createElement(t), s = d.getElementsByTagName(t)[0];
-        g.async = true; g.src = '//www.google-analytics.com/ga.js';
-        s.parentNode.insertBefore(g, s);
-   })(document, 'script');
-  </script>
-  {% endblock %}
   </body>
 </html>
