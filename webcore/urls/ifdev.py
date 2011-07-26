@@ -1,3 +1,6 @@
+from django.conf.urls.defaults import *
+from django.conf import settings
+
 if settings.DEV:
     urlpatterns = patterns('',
         (r'^media/(.*)$', 'django.views.static.serve', {
