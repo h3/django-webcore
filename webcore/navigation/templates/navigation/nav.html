@@ -1,0 +1,17 @@
+{% load mptt_tags navigation_tags %}
+<div class="nav-root">
+    {% recursetree nodes %}
+    <div class="nav-item{% if not node.get_next_sibling %} last{% endif %}{% if not node.get_previous_sibling %} first{% endif %}">
+        {% if node.url %}
+        <a href="{{ node.get_absolute_url }}" title="{% if node.title%}{{node.title }}{% else %}{{ node.label }}{% endif %}"{% if node|is_active:request %} class="nav-active"{% endif %}>{{ node.label }}</a>
+        {% else %}
+        <span{% if node|is_active:request %} class="nav-active"{% endif %}>{{ node.label }}</span>
+        {% endif %}
+        {% if not node.is_leaf_node %}
+        <div class="nav-children">
+            {{ children }}
+        </div>
+        {% endif %}
+    </div>
+    {% endrecursetree %}
+</div>
