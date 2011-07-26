@@ -1,0 +1,29 @@
+{% if request.LANGUAGE_CODE %}{% load i18n %}{% endif %}
+{% if is_paginated %}{% spaceless %}{% firstof page_obj.has_previous has_previous %}<ol class="clearfix">
+    {# Previous #}
+    {% if page_obj.has_previous or has_previous %}
+    <li class="pagination-prev"><a href="../{% firstof previous page_obj.previous_page_number %}/{% if request.META.QUERY_STRING %}?{{ request.META.QUERY_STRING }}{% endif %}" title="{% trans "Previous page" %}">&laquo; {% trans "Prev" %}</a></li>
+    {% endif %}
+    {# legacy list views (Django < 1.3) #}
+    {% if page_range %}
+    {% for linkpage in page_range %}
+    {% ifequal linkpage page %}
+    <li class="pagination-active"><span>{{ page }}</span></li>
+    {% else %}
+    <li><a href="../{{ linkpage }}{% if request.META.QUERY_STRING %}?{{ request.META.QUERY_STRING }}{% endif %}">{{ linkpage }}</a></li>
+    {% endifequal %}
+    {% endfor %}
+    {% else %}
+    {# class based list views (Django > 1.3) #}
+    {% for linkpage in paginator.page_range %}
+    {% ifequal linkpage page_obj.number %}
+    <li class="pagination-active"><span>{{ linkpage }}</span></li>
+    {% else %}
+    <li><a href="../{{ linkpage }}{% if request.META.QUERY_STRING %}?{{ request.META.QUERY_STRING }}{% endif %}">{{ linkpage }}</a></li>
+    {% endifequal %}
+    {% endfor %}
+    {% endif %}
+    {# Next #}
+    {% if page_obj.has_next or has_next %}
+    <li class="pagination-next"><a href="../{% firstof next page_obj.next_page_number %}/{% if request.META.QUERY_STRING %}?{{ request.META.QUERY_STRING }}{% endif %}" title="{% trans "Next page" %}">A{% trans "Next" %} &raquo;</a></li>
+{% endif %}</ol>{% endspaceless %}{% endif %}
