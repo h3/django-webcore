@@ -1,5 +1,6 @@
 {% block doctype %}<!DOCTYPE html>{% endblock %}
-{% load i18n %}{% get_current_language as lang %}
+{% load i18n frontadmin_tags %}
+{% get_current_language as lang %}
 
 {# www.phpied.com/conditional-comments-block-downloads/ #}
 <!--[if IE]><![endif]-->
@@ -61,6 +62,7 @@
   {% block project.head %}{% endblock %}
   {% block project.body %}{% endblock %}
   {% block project.footer %}{% endblock %}
+  {% frontadmin_bar request %}
   {% endblock %}
   
   {% block site.styles %}
@@ -112,7 +114,70 @@
         }
     });
 
+    $(function(){
+        var resizeToolbars = function(){
+            $('.frontadmin-toolbar-frame').each(function(){
+                $(this).width($(this).parent().width())
+            })
+        }
+        resizeToolbars()
+        $(window).resize(resizeToolbars)
+
+        $('#frontadmin-bar-frame, .frontadmin-toolbar-frame').each(function(){
+            $(this).contents().find('body').html($(this).text())
+        })
+    })
+
   </script>
+<style>
+
+/* Frontadmin toolbar */
+.frontadmin-toolbar-frame {
+    width: 100%;
+    display: block;
+    height: 24px;
+    margin: 0 0 10px 0;
+    border: 1px solid #ccc;
+    -moz-box-shadow: 0 0 1px #fff;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -o-border-radius: 2px;
+    border-radius: 2px;
+    opacity: 0.6;
+}
+
+.front-admin-block:hover .frontadmin-toolbar-frame,
+.frontadmin-toolbar-frame:hover {
+    opacity: 1.0;
+}
+
+.front-admin-block {
+}
+.front-admin-block:hover {
+    background: #def;
+}
+/* Main frontadmin bar */
+#frontadmin-bar-frame {
+    width: 70%;
+    display: block;
+    height: 24px;
+    margin: 0 50%;
+    position: fixed;
+    bottom: 0;
+    border: 1px solid #ccc;
+    -moz-box-shadow: 0 0 1px #fff;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -o-border-radius: 2px;
+    border-radius: 2px;
+    opacity: 0.6;
+}
+
+#frontadmin-bar-frame:hover {
+    opacity: 1.0;
+}
+
+</style>
   {% block project.scripts %}{% endblock%}
   {% block app.scripts %}{% endblock%}
 
