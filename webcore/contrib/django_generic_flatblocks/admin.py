@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
-from django_generic_flatblocks.models import GenericFlatblock
+from webcore.contrib.django_generic_flatblocks.models import GenericFlatblock
 
 class GenericFlatblockAdmin(admin.ModelAdmin):
 

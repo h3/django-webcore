@@ -4,7 +4,7 @@ from django.template.loader import select_template
 from django.conf import settings
 from django.db.models.loading import get_model
 from django.template.defaultfilters import slugify
-from django_generic_flatblocks.models import GenericFlatblock
+from webcore.contrib.django_generic_flatblocks.models import GenericFlatblock
 
 register = Library()
 
