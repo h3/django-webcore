@@ -1,0 +1,10 @@
+{% load i18n %}
+<iframe class="frontadmin-toolbar-frame">
+<div class="frontadmin-toolbar">
+    <span></span>
+    <a href="{{ delete_link }}" class="frontadmin-btn-delete" title="{% trans "Delete" %} {{ app_label }} {{ object_name }} ({% firstof object.title object.label object.name object.slug object.pk %})">{% trans "Delete" %}</a>
+    <a href="{{ edit_link }}" title="{% trans "Edit" %} {{ app_label }} {{ object_name }} ({% firstof object.title object.label object.name object.slug object.pk %})">{% trans "Edit" %}</a>
+    <a href="{{ admin_link }}" title="{% trans "Edit in admin" %}">{% trans "Admin" %}</a>
+</div>
+<style>{% include "frontadmin/toolbar.inc.css" %}</style>
+</iframe>

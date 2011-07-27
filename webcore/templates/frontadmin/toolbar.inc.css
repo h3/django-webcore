@@ -1,0 +1,40 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    background: #eee;
+    font-family: Arial,sans-serif;
+}
+.frontadmin-toolbar {
+    padding: 1px;
+}
+a {
+    background: #999;
+    color: #eee;
+    display: block;
+    float: right;
+    font-size: 0.8em;
+    font-weight: bold;
+    margin: 0 0 0 1px;
+    padding: 4px 8px 3px 7px;
+    text-decoration: none;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -o-border-radius: 2px;
+    border-radius: 2px;
+}
+a:hover {
+    background: #00aeef;
+    color: #fff;
+}
+a.frontadmin-btn-delete {
+    background: #9b0000;
+}
+a.frontadmin-btn-delete:hover {
+    background: #c30;
+}
+
+span {
+    color: #444;
+    font-size: 0.6em;
+}
+

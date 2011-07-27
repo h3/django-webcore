@@ -1,0 +1,7 @@
+{% load frontadmin_tags %}
+
+{{ request.user }}
+{% frontadmin object %}
+<h2>{{ object.title }}</h2>
+{{ object.text|safe }}
+{% endfrontadmin %}
