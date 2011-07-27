@@ -1,0 +1,36 @@
+{% extends "admin/change_list.html" %}
+{% load adminmedia admin_list i18n %}
+
+{% block extrahead %}
+{{ block.super }}
+{#<link rel="stylesheet" type="text/css" href="{{ FEINCMS_ADMIN_MEDIA }}style.css" />#}
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}navigation/css/tree.css" />
+
+<script type="text/javascript" src="{{ STATIC_URL }}libs/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}libs/jqueryui/jquery-ui.min.js"></script>
+<script type="text/javascript">
+    var feincms = {
+        "jQuery": jQuery,
+        "tree_structure": {{ tree_structure|default:"null" }}
+    };
+</script>
+<script type="text/javascript" src="{{ STATIC_URL }}plugins/jquery.cookie.js"></script>
+{#<script type="text/javascript" src="{{ FEINCMS_ADMIN_MEDIA }}toolbox.js"></script>#}
+<script type="text/javascript" src="{{ STATIC_URL }}navigation/js/tree.js"></script>
+
+{% endblock %}
+
+{% block filters %}
+	{% if cl.has_filters %}
+		<div id="changelist-filter">
+			<h2>{% trans 'Shortcuts' %}</h2>
+			<ul>
+				<li><a id="collapse_entire_tree" href="#">{% trans 'Collapse tree' %}</a></li>
+				<li><a id="open_entire_tree" href="#">{% trans 'Expand tree' %}</a></li>
+			</ul>
+
+			<h2>{% trans 'Filter' %}</h2>
+			{% for spec in cl.filter_specs %}{% admin_list_filter cl spec %}{% endfor %}
+		</div>
+	{% endif %}
+{% endblock %}
