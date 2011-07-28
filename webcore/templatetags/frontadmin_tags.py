@@ -10,10 +10,17 @@ from django.conf import settings
 
 register = template.Library()
 
+@register.simple_tag()
+def frontadmin_bar(request):
+    t = loader.select_template([
+            "frontadmin/bar.inc.html",
+        ])
+    return t.render(Context({
+    }))
+
 
 @register.simple_tag()
 def frontadmin_toolbar(obj):
-    print dir(obj)
     app_label = obj._meta.app_label
     object_name = obj._meta.object_name.lower()
     t = loader.select_template([
