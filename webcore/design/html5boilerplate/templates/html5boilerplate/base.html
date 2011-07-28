@@ -116,9 +116,19 @@
 
     $(function(){
         var resizeToolbars = function(){
+            // toolbars
             $('.frontadmin-toolbar-frame').each(function(){
                 $(this).width($(this).parent().width())
             })
+            // bar
+            var ww = $(document).width()
+            var w =  parseInt(ww / 3)
+            if (w < 300) {
+                w = 300
+            }
+            $('#frontadmin-bar-frame')
+                .width(w)
+                .css('margin-left', ww / 2 - (w / 2))
         }
         resizeToolbars()
         $(window).resize(resizeToolbars)
@@ -156,26 +166,23 @@
 .front-admin-block:hover {
     background: #def;
 }
+
 /* Main frontadmin bar */
 #frontadmin-bar-frame {
     width: 70%;
     display: block;
     height: 24px;
-    margin: 0 50%;
+    margin: 0;
     position: fixed;
-    bottom: 0;
+    bottom: -1px;
     border: 1px solid #ccc;
     -moz-box-shadow: 0 0 1px #fff;
-    -moz-border-radius: 2px;
+    -moz-border-radius: 2px 2px 0 0;
     -webkit-border-radius: 2px;
     -o-border-radius: 2px;
     border-radius: 2px;
-    opacity: 0.6;
 }
 
-#frontadmin-bar-frame:hover {
-    opacity: 1.0;
-}
 
 </style>
   {% block project.scripts %}{% endblock%}

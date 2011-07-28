@@ -2,6 +2,7 @@
 #from decimal import *
 
 from django import template
+from django.template import RequestContext, Context
 from django.conf import settings
 #from django.core.urlresolvers import RegexURLResolver, reverse
 #from django.utils.safestring import SafeString
@@ -15,7 +16,7 @@ def frontadmin_bar(request):
     t = loader.select_template([
             "frontadmin/bar.inc.html",
         ])
-    return t.render(Context({
+    return t.render(RequestContext(request, {
     }))
 
 

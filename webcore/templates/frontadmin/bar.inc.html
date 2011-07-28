@@ -1,10 +1,20 @@
 {% load i18n %}
+{% if user.is_authenticated and user.is_staff %}
 <iframe id="frontadmin-bar-frame">
 <div class="frontadmin-bar">
-    <a href="{{ admin_link }}" title="{% trans "Edit in admin" %}">{% trans "Logged in as motion" %}</a>
-    <a href="{{ admin_link }}" title="{% trans "Edit in admin" %}">{% trans "Admini" %}</a>
-    <a href="{{ admin_link }}" title="{% trans "Edit in admin" %}">{% trans "Disconnect" %}</a>
+    <span>
+        {% trans "Logged in as " %}&nbsp;
+        {% if user.first_name or user.last_name %}
+        <a href="{{ user.get_absolute_url }}" title="{% trans "Modify your profile" %}">{{ user.first_name }} {{ user.last_name }}</a>
+        {% else %}
+        <a href="{% url admin:auth_user_change user.id %}" title="{% trans "Modify your profile" %}">{{ user }}</a>
+        {% endif %}
+    </span>
+    <a href="{% url admin:logout %}?next={{ request.META.PATH_INFO }}" title="{% trans "Disconnect" %}" class="button red">{% trans "Disconnect" %}</a>
+    <a href="{% url admin:index %}" title="{% trans "Edit in admin" %}" class="button">{% trans "Admin" %}</a>
+    <a href="#" title="{% trans "Show editable blocks" %}" class="button">{% trans "Metas" %}</a>
+    <a href="#" title="{% trans "Show editable blocks" %}" class="button">{% trans "Enter edit mode" %}</a>
 </div>
 <style>{% include "frontadmin/bar.inc.css" %}</style>
 </iframe>
-
+{% endif %}
