@@ -3,7 +3,7 @@
 <iframe id="frontadmin-bar-frame">
 <div class="frontadmin-bar">
     <span>
-        {% trans "Logged in as " %}&nbsp;
+        {% trans "Logged in as " %} 
         {% if user.first_name or user.last_name %}
         <a href="{{ user.get_absolute_url }}" title="{% trans "Modify your profile" %}" target="_parent">{{ user.first_name }} {{ user.last_name }}</a>
         {% else %}
