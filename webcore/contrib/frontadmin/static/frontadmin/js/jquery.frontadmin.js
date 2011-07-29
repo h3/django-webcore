@@ -24,10 +24,15 @@ $(function(){
         // frontadmin toolbar initial state
         if ($self.cookie('frontadmin_toolbars_visibles') == null) { 
             // Cookie does not exist, set it and show the toolbar by default
-            $self.cookie('frontadmin_toolbars_visibles', 'true')
+            $self.cookie('frontadmin_toolbars_visibles', true)
             $self.states.toolbars_visibles = true
         }
-        $('html')[($self.toolbars_visibles == true && 'addClass' || 'removeClass')]('frontadmin-show-toolbars')
+        else if ($self.cookie('frontadmin_toolbars_visibles') == 'true') {
+            $self.states.toolbars_visibles = true
+        }
+        else {
+            $self.states.toolbars_visibles = false
+        }
 
         $self.events = {
 
@@ -65,7 +70,11 @@ $(function(){
             // toggle frontadmin ui
             onToggleToolbar: function(e){
                 $('html').toggleClass('frontadmin-show-toolbars')
-                $self.cookie('frontadmin_toolbars_visibles', $('html').hasClass('frontadmin-show-toolbars') && true || false)
+                var show = $('html').hasClass('frontadmin-show-toolbars')
+                $(this)[show && 'addClass' || 'removeClass']('active')
+                $self.cookie('frontadmin_toolbars_visibles', show && 'true' || 'false')
+                $self.states.toolbars_visibles = show
+                $self.cookie('frontadmin_toolbars_visibles', show && true || false)
                 return false;
             }
         }
@@ -87,6 +96,7 @@ $(function(){
                     $(this).contents().find('body').html($(this).text())
                 })
                 $self.bindBarEvents()
+                $('html')[($self.states.toolbars_visibles == true && 'addClass' || 'removeClass')]('frontadmin-show-toolbars')
                 $self.states.initialized = true
             }
         }

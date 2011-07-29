@@ -40,6 +40,9 @@ a:hover {
 a.button.red {
     background: #9b0000;
 }
+a.button.active {
+    background: #444;
+}
 a.button.red:hover {
     background: #c30;
 }
