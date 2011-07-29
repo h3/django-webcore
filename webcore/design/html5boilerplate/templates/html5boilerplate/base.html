@@ -113,82 +113,15 @@
             }
         }
     });
-
-    $(function(){
-        var resizeToolbars = function(){
-            // toolbars
-            $('.frontadmin-toolbar-frame').each(function(){
-                $(this).width($(this).parent().width())
-            })
-            // bar
-            var ww = $(document).width()
-            var w =  parseInt(ww / 3)
-            if (w < 300) {
-                w = 300
-            }
-            $('#frontadmin-bar-frame')
-                .width(w)
-                .css('margin-left', ww / 2 - (w / 2))
-        }
-        resizeToolbars()
-        $(window).resize(resizeToolbars)
-
-        $('#frontadmin-bar-frame, .frontadmin-toolbar-frame').each(function(){
-            $(this).contents().find('body').html($(this).text())
-        })
-    })
-
   </script>
-<style>
-
-/* Frontadmin toolbar */
-.frontadmin-toolbar-frame {
-    width: 100%;
-    display: block;
-    height: 24px;
-    margin: 0 0 10px 0;
-    border: 1px solid #ccc;
-    -moz-box-shadow: 0 0 1px #fff;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    -o-border-radius: 2px;
-    border-radius: 2px;
-    opacity: 0.6;
-}
-
-.front-admin-block:hover .frontadmin-toolbar-frame,
-.frontadmin-toolbar-frame:hover {
-    opacity: 1.0;
-}
-
-.front-admin-block {
-}
-.front-admin-block:hover {
-    background: #def;
-}
-
-/* Main frontadmin bar */
-#frontadmin-bar-frame {
-    width: 70%;
-    display: block;
-    height: 24px;
-    margin: 0;
-    position: fixed;
-    bottom: -1px;
-    border: 1px solid #ccc;
-    -moz-box-shadow: 0 0 1px #fff;
-    -moz-border-radius: 2px 2px 0 0;
-    -webkit-border-radius: 2px;
-    -o-border-radius: 2px;
-    border-radius: 2px;
-}
-
-
-</style>
   {% block project.scripts %}{% endblock%}
   {% block app.scripts %}{% endblock%}
-
   {% endblock%}
+  {% block site.frontadmin %}
+  {% if user.is_authenticated and user.is_staff %}
+  {% include "frontadmin/frontadmin.inc.html" %}
+  {% endif %}
+  {% endblock %}
   {# block document.pngfix %}<!--[if lt IE 7 ]><script src="js/dd_belatedpng.js?v=1"></script><![endif]-->{% endblock #}
   </body>
 </html>
