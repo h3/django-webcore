@@ -6,6 +6,7 @@
     <a href="{{ delete_link }}" class="frontadmin-btn-delete" title="{% trans "Delete" %} {{ app_label }} {{ object_name }} ({% firstof object.title object.label object.name object.slug object.pk %})">{% trans "Delete" %}</a>
     <a href="{{ edit_link }}" title="{% trans "Edit" %} {{ app_label }} {{ object_name }} ({% firstof object.title object.label object.name object.slug object.pk %})">{% trans "Edit" %}</a>
     <a href="{{ admin_link }}" title="{% trans "Edit in admin" %}">{% trans "Admin" %}</a>
+    <a href="{{ history_link }}" title="{% trans "View change history" %}">{% trans "History" %}</a>
 </div>
 <style>{% include "frontadmin/toolbar.inc.css" %}</style>
 </iframe>

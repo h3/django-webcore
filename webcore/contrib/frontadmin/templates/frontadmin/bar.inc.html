@@ -11,9 +11,9 @@
         {% endif %}
     </span>
     <a id="frontadmin-btn-logout" href="{% url admin:logout %}" title="{% trans "Disconnect" %}" class="button red">{% trans "Disconnect" %}</a>
-    <a href="{% url admin:index %}" title="{% trans "Edit in admin" %}" class="button">{% trans "Admin" %}</a>
-    <a href="#" title="{% trans "Show editable blocks" %}" class="button">{% trans "Metas" %}</a>
-    <a href="#" title="{% trans "Show editable blocks" %}" class="button">{% trans "Enter edit mode" %}</a>
+    <a id="frontadmin-btn-admin" href="{% url admin:index %}" title="{% trans "Edit in admin" %}" class="button" target="_parent">{% trans "Admin" %}</a>
+    {#<a id="frontadmin-btn-metas" href="#" title="{% trans "Edit page metas" %}" class="button">{% trans "Metas" %}</a>#}
+    <a id="frontadmin-btn-toggle" href="#" title="{% trans "Show editable blocks" %}" class="button">{% trans "Enter edit mode" %}</a>
 </div>
 <style>{% include "frontadmin/bar.inc.css" %}</style>
 </iframe>

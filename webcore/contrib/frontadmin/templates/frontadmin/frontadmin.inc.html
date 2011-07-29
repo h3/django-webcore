@@ -1,7 +1,5 @@
-<script src="{{ STATIC_URL }}libs/jquery/jquery.min.js"></script>
+<script>if (!$.cookie) $.getScript('{{ STATIC_URL }}plugins/jquery.cookie.js')</script>
 <script src="{{ STATIC_URL }}frontadmin/js/jquery.frontadmin.js"></script>
-<script>
-</script>
 <style>
 /* Frontadmin toolbar */
 .frontadmin-toolbar-frame {
@@ -16,16 +14,20 @@
     -o-border-radius: 2px;
     border-radius: 2px;
     opacity: 0.6;
+    display: none;
 }
-
-.front-admin-block:hover .frontadmin-toolbar-frame,
-.frontadmin-toolbar-frame:hover {
+.frontadmin-show-toolbars .front-admin-block:hover .frontadmin-toolbar-frame,
+.frontadmin-show-toolbars .frontadmin-toolbar-frame:hover {
     opacity: 1.0;
 }
 
-.front-admin-block {
+.frontadmin-show-toolbars .frontadmin-toolbar-frame,
+.frontadmin-show-toolbars .front-admin-block {
+    display: block;
 }
-.front-admin-block:hover {
+
+
+.frontadmin-show-toolbars .front-admin-block:hover {
     background: #def;
 }
 
