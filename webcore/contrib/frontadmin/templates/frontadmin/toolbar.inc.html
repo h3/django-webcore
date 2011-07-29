@@ -1,3 +1,4 @@
+{% if user.is_authenticated and user.is_staff %}
 {% load i18n %}
 <iframe class="frontadmin-toolbar-frame">
 <div class="frontadmin-toolbar">
@@ -8,3 +9,4 @@
 </div>
 <style>{% include "frontadmin/toolbar.inc.css" %}</style>
 </iframe>
+{% endif %}

@@ -1,5 +1,5 @@
-{% load i18n %}
 {% if user.is_authenticated and user.is_staff %}
+{% load i18n %}
 <iframe id="frontadmin-bar-frame">
 <div class="frontadmin-bar">
     <span>
@@ -10,7 +10,7 @@
         <a href="{% url admin:auth_user_change user.id %}" title="{% trans "Modify your profile" %}">{{ user }}</a>
         {% endif %}
     </span>
-    <a href="{% url admin:logout %}?next={{ request.META.PATH_INFO }}" title="{% trans "Disconnect" %}" class="button red">{% trans "Disconnect" %}</a>
+    <a id="frontadmin-btn-logout" href="{% url admin:logout %}" title="{% trans "Disconnect" %}" class="button red">{% trans "Disconnect" %}</a>
     <a href="{% url admin:index %}" title="{% trans "Edit in admin" %}" class="button">{% trans "Admin" %}</a>
     <a href="#" title="{% trans "Show editable blocks" %}" class="button">{% trans "Metas" %}</a>
     <a href="#" title="{% trans "Show editable blocks" %}" class="button">{% trans "Enter edit mode" %}</a>

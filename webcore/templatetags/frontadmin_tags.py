@@ -21,7 +21,7 @@ def frontadmin_bar(request):
 
 
 @register.simple_tag()
-def frontadmin_toolbar(obj):
+def frontadmin_toolbar(request, obj):
     app_label = obj._meta.app_label
     object_name = obj._meta.object_name.lower()
     t = loader.select_template([
@@ -29,7 +29,7 @@ def frontadmin_toolbar(obj):
             "frontadmin/%s/toolbar.inc.html" % app_label, 
             "frontadmin/%s/%s/toolbar.inc.html" % (app_label, object_name),
         ])
-    return t.render(Context({
+    return t.render(RequestContext(request, {
         'app_label': app_label,
         'object_name': object_name,
         'object': obj,
@@ -42,21 +42,25 @@ from django.template import loader, Context
 @register.tag(name='frontadmin')
 def render_frontadmin(parser, token):
     try:
-        tag_name, args = token.contents.split(None, 1)
+        print 
+        tag_name, request, obj = token.contents.split(None, 2)
     except ValueError:
-        raise template.TemplateSyntaxError("'captureas' node requires a variable name.")
+        raise template.TemplateSyntaxError("'frontadmin' node requires a request and a object variables")
     nodelist = parser.parse(('endfrontadmin',))
     parser.delete_first_token()
-    return CaptureasNode(nodelist, args)
+    return CaptureasNode(nodelist, request, obj)
 
 class CaptureasNode(template.Node):
-    def __init__(self, nodelist, obj):
+    def __init__(self, nodelist, request, obj):
+        print obj
         self.nodelist = nodelist
         self.obj = template.Variable(obj)
+        self.request = template.Variable(request)
 
     def render(self, context):
         var = self.obj.resolve(context)
-        context['toolbar'] = frontadmin_toolbar(var)
+        request = self.request.resolve(context)
+        context['toolbar'] = frontadmin_toolbar(request, var)
         output = self.nodelist.render(context)
         return '<div id="frontadmin-%s-%s-%s" class="front-admin-block">%s</div>' % (
                 var._meta.app_label,
