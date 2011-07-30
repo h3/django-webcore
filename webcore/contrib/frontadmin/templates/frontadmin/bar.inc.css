@@ -14,6 +14,9 @@ span {
     display: block;
     float: left;
 }
+span a {
+    font-weight: bold;
+}
 a {
     text-decoration: none;
     color: #00aeef;
@@ -45,6 +48,6 @@ a.button.active {
     background: #444;
 }
 a.button.red:hover {
-    background: #c30;
+    background: #c30
 }
 

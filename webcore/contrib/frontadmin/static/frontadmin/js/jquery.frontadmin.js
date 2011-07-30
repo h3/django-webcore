@@ -17,6 +17,7 @@ $(function(){
             toggle: '#frontadmin-btn-toggle',
             deleteObject: '#frontadmin-delete-object',
             changeObject: '#frontadmin-change-object',
+            objectHistory: '#frontadmin-history-object',
         }
 
         $self.cookie = function(k, v) {
@@ -229,6 +230,59 @@ $(function(){
                     }
                 })
                 return false
+            },
+
+            // Triggered when a toolbar historybutton is clicked
+            onObjectHistory: function() {
+                var url = $(this).attr('href')
+                var el = $(this)
+                var bd = $(this).parents('body')
+                var ft = $([
+                    '<div class="module footer">',
+                        '<ul class="submit-row">',
+                            '<li class="cancel-button-container"><a href="#" class="cancel-link">Close</a></li>',
+                        '</ul><br clear="all">',
+                    '</div>'].join(''))
+                $self.states.active_frame = $.iframeWindow(url, function() {
+                    var frame  = $(this)
+                    var doc    = frame.contents()
+                    var msg    = doc.find('#container > .messagelist')
+                    var errors = doc.find('.errornote').get(0)
+
+                    $self.cleanDocument(doc)
+
+                    doc.find('body').append(ft)
+                    doc.find('.cancel-button-container').bind('click', function(){
+                        $self.closeActiveFrame()
+                    })
+
+                    /*
+                    if (frame.hasClass('deleted')) {
+                        frame.removeClass('deleted')
+                        var errors = doc.find('.errornote').get(0)
+                        if (!errors) {
+                            $self.closeActiveFrame()
+                            //$.frontendMessage(msg.find('li:first').text())
+                            block.slideUp('slow', function() {
+                                $(this).remove()
+                            })
+                        }
+                    }
+                    else {
+                        var cancel = doc.find('.left.cancel-button-container').removeClass('left').remove()
+                        doc.find('.cancel-button-container').replaceWith(cancel)
+                        doc.find('.cancel-link').unbind('click')
+                            .bind('click.adminToolbar', function(){
+                                frame.removeClass('deleting').removeClass('deleted')
+                                $self.closeActiveFrame()
+                            }).end().remove()
+                        // Confirm delete
+                        doc.find('.footer input[type=submit]').bind('click.adminToolbar', function() {
+                            frame.removeClass('deleting').addClass('deleted')
+                        })
+                    }*/
+                })
+                return false
             }
         }
 
@@ -242,7 +296,8 @@ $(function(){
             function bind(tb){
                 var doc = $(tb).contents()
                 doc.find($self.buttons.deleteObject).bind('click.frontadmin', $self.events.onObjectDelete).end()
-                doc.find($self.buttons.changeObject).bind('click.frontadmin', $self.events.onObjectChange).end()
+                   .find($self.buttons.changeObject).bind('click.frontadmin', $self.events.onObjectChange).end()
+                   .find($self.buttons.objectHistory).bind('click.frontadmin', $self.events.onObjectHistory).end()
             }
             if (toolbar) {
                 bind(toolbar)
