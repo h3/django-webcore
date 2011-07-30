@@ -5,7 +5,8 @@ $(function(){
         
         $self.states = {
             initialized: false,
-            toolbars_visibles: false
+            toolbars_visibles: false,
+            active_frame: false
         }
 
         $self.bar = $('#frontadmin-bar-frame')
@@ -14,6 +15,7 @@ $(function(){
         $self.buttons = {
             logout: '#frontadmin-btn-logout',
             toggle: '#frontadmin-btn-toggle',
+            deleteObject: '#frontadmin-delete-object',
         }
 
         $self.cookie = function(k, v) {
@@ -32,6 +34,45 @@ $(function(){
         }
         else {
             $self.states.toolbars_visibles = false
+        }
+
+        $self.closeActiveFrame = function() {
+            $self.states.active_frame.parent().fadeOut(function(){
+                $(this).remove()
+            })
+        }
+
+        // Remove toolbars and useless stuff in window mode
+        $self.cleanDocument = function(d) {
+            // add cancel button
+            var $this  = this;
+            var cancel = $('<li class="cancel-button-container"><a class="cancel-link" href="#">Cancel</a></li>')
+            cancel.find('a').bind('click.adminToolbar', function() {
+                if (!$elf.active_frame.hasClass('modified') || confirm('Close and discard modifications ?')) {
+                    $this.closeActiveFrame()
+                }
+            })
+
+            d.find('#header, #breadcrumbs').remove().end()
+             .find('body').css({paddingTop: 0}).end()
+             .find('.module.footer')
+                 .css({
+                      '-moz-border-radius': '0 0 4px 4px',
+                      '-webkit-border-radius': '0 0 4px 4px',
+                      'border-radius': '0 0 4px 4px'
+                  })
+                 .find('.submit-row').append(cancel).end()
+                 .find('input[name="_continue"]').bind('click', function() {
+                     $elf.active_frame.addClass('saving continue')
+                 }).end()
+                 .find('input[name="_save"]').bind('click', function() {
+                     $elf.active_frame.addClass('saving')
+                 }).end()
+                 .find('.delete-link').bind('click', function() {
+                     $elf.active_frame.addClass('deleting')
+                 }).end()
+                 .find('input[name="_addanother"]').parent().hide().end().end()
+             .end() 
         }
 
         $self.events = {
@@ -76,6 +117,48 @@ $(function(){
                 $self.states.toolbars_visibles = show
                 $self.cookie('frontadmin_toolbars_visibles', show && true || false)
                 return false;
+            },
+
+            // Triggered when a toolbar delete button is clicked
+            onObjectDelete: function() {
+                var url = $(this).attr('href')
+                var el = $(this)
+                $self.states.active_frame = $.iframeWindow(url, function() {
+                    var frame  = $(this)
+                    var doc    = frame.contents()
+                    var msg    = doc.find('#container > .messagelist')
+                    var block  = el.parents('.block-editable')
+                    var url    = document.location.href + ' #'+ block.attr('id')
+                    var errors = doc.find('.errornote').get(0)
+
+                    $self.cleanDocument(doc)
+
+                    if (frame.hasClass('deleted')) {
+                        frame.removeClass('deleted')
+                        var errors = doc.find('.errornote').get(0)
+                        if (!errors) {
+                            $self.closeActiveFrame()
+                            //$.frontendMessage(msg.find('li:first').text())
+                            block.slideUp('slow', function() {
+                                $(this).remove()
+                            })
+                        }
+                    }
+                    else {
+                        var cancel = doc.find('.left.cancel-button-container').removeClass('left').remove()
+                        doc.find('.cancel-button-container').replaceWith(cancel)
+                        doc.find('.cancel-link').unbind('click')
+                            .bind('click.adminToolbar', function(){
+                                frame.removeClass('deleting').removeClass('deleted')
+                                $self.closeActiveFrame()
+                            }).end().remove()
+                        // Confirm delete
+                        doc.find('.footer input[type=submit]').bind('click.adminToolbar', function() {
+                            frame.removeClass('deleting').addClass('deleted')
+                        })
+                    }
+                })
+                return false
             }
         }
 
@@ -83,7 +166,13 @@ $(function(){
             var doc = $self.bar.contents()
             doc.find($self.buttons.logout).bind('click.frontadmin', $self.events.onLogout).end()
                .find($self.buttons.toggle).bind('click.frontadmin', $self.events.onToggleToolbar).end()
-
+        }
+        
+        $self.bindToolbarEvents = function() {
+            $.each($self.toolbars, function(){
+                var doc = $(this).contents()
+                doc.find($self.buttons.deleteObject).bind('click.frontadmin', $self.events.onObjectDelete).end()
+            })
         }
 
         return {
@@ -95,7 +184,10 @@ $(function(){
                 $self.bar.add($self.toolbars).each(function(){
                     $(this).contents().find('body').html($(this).text())
                 })
+
                 $self.bindBarEvents()
+                $self.bindToolbarEvents()
+
                 $('html')[($self.states.toolbars_visibles == true && 'addClass' || 'removeClass')]('frontadmin-show-toolbars')
                 $self.states.initialized = true
             }
@@ -104,4 +196,28 @@ $(function(){
 
     $.frontadmin.init()
 
+    $.iframeWindow = function(src, callback, option) {
+        var options  = options || {}
+        var callback = callback || function(){}
+        var iframe   = $('<iframe frameborder="0" />').attr('src', src).load(callback)
+        var wrapper  = $('<div id="frontadmin-iframe-window">').append(iframe)
+
+        wrapper.css({
+            position: 'fixed',
+            top: 50,
+            left: 50,
+            right: 50,
+            bottom: 50,
+            zIndex: 99999
+        }).appendTo('body')
+          
+        var resize = function() {
+            iframe.css({
+                height: wrapper.height(),           
+                width:  wrapper.width(),
+            })
+        }
+        $(window).resize(resize).trigger('resize')
+        return iframe
+    }
 })
