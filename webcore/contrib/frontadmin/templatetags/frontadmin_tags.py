@@ -62,10 +62,14 @@ class CaptureasNode(template.Node):
     def render(self, context):
         var = self.obj.resolve(context)
         request = self.request.resolve(context)
-        context['toolbar'] = frontadmin_toolbar(request, var)
+       #context['toolbar'] = frontadmin_toolbar(request, var)
         output = self.nodelist.render(context)
-        return '<div id="frontadmin-%s-%s-%s" class="front-admin-block">%s</div>' % (
+        return """
+        <div id="frontadmin-%s-%s-%s" class="front-admin-block">
+            %s<div class="frontadmin-block-content">%s</div>
+        </div>""" % (
                 var._meta.app_label,
                 var._meta.object_name.lower(),
                 var.pk,
+                frontadmin_toolbar(request, var),
                 output,)

@@ -8,6 +8,9 @@
     <a id="frontadmin-admin-object" href="{{ change_url }}" title="{% trans "Edit in admin" %}" target="_parent">{% trans "Admin" %}</a>
     <a href="{{ history_link }}" title="{% trans "View change history" %}">{% trans "History" %}</a>
 </div>
+<input id="app_label" value="{{ app_label }}">
+<input id="object_name" value="{{ object_name }}">
+<input id="object_id" value="{{ object.pk }}">
 <style>{% include "frontadmin/toolbar.inc.css" %}</style>
 </iframe>
 {% endif %}

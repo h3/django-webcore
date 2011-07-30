@@ -123,13 +123,17 @@ $(function(){
             onObjectChange: function(){
                 var url = $(this).attr('href')
                 var el = $(this)
-                
+                var bd = $(this).parents('body')
+                var block = $("#frontadmin-"+ bd.find('#app_label').val() 
+                              +"-"+ bd.find('#object_name').val() 
+                              +"-"+ bd.find('#object_id').val())
+                var content = block.find('.frontadmin-block-content')
+
                 // Open iframe window
                 $self.states.active_frame = $.iframeWindow(url, function() {
                     var frame  = $(this)
                     var doc    = frame.contents()
                     var msg    = doc.find('#container > .messagelist')
-                    var block  = el.parents('.block-editable')
                     var url    = document.location.href + ' #'+ block.attr('id')
                     var errors = doc.find('.errornote').get(0)
 
@@ -141,9 +145,10 @@ $(function(){
                             if (!frame.hasClass('continue')) {
                                 $self.closeActiveFrame()
                             }
-                            block.load(url, function() {
-                                block = $(this).children().unwrap()
-                                $this._bindEvents(block)
+                            content.load(url, function() {
+                                content.find('.frontadmin-toolbar-frame').remove()
+                                content = $(this).children().unwrap()
+                                //$self.bindToolbarEvents(content.parent().find('iframe'))
                                 //$.frontendMessage(msg.find('li:first').text())
                             })
                         }
@@ -186,11 +191,13 @@ $(function(){
             onObjectDelete: function() {
                 var url = $(this).attr('href')
                 var el = $(this)
+                var bd = $(this).parents('body')
+                var block = $("#frontadmin-"+ bd.find('#app_label').val() +"-"+ bd.find('#object_name').val() +"-"+ bd.find('#object_id').val())
+
                 $self.states.active_frame = $.iframeWindow(url, function() {
                     var frame  = $(this)
                     var doc    = frame.contents()
                     var msg    = doc.find('#container > .messagelist')
-                    var block  = el.parents('.block-editable')
                     var url    = document.location.href + ' #'+ block.attr('id')
                     var errors = doc.find('.errornote').get(0)
 
@@ -231,12 +238,20 @@ $(function(){
                .find($self.buttons.toggle).bind('click.frontadmin', $self.events.onToggleToolbar).end()
         }
         
-        $self.bindToolbarEvents = function() {
-            $.each($self.toolbars, function(){
-                var doc = $(this).contents()
+        $self.bindToolbarEvents = function(toolbar) {
+            function bind(tb){
+                var doc = $(tb).contents()
                 doc.find($self.buttons.deleteObject).bind('click.frontadmin', $self.events.onObjectDelete).end()
                 doc.find($self.buttons.changeObject).bind('click.frontadmin', $self.events.onObjectChange).end()
-            })
+            }
+            if (toolbar) {
+                bind(toolbar)
+            }
+            else {
+                $.each($self.toolbars, function(){
+                    bind(this)
+                })
+            }
         }
 
         return {
