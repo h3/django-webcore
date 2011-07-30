@@ -16,6 +16,7 @@ $(function(){
             logout: '#frontadmin-btn-logout',
             toggle: '#frontadmin-btn-toggle',
             deleteObject: '#frontadmin-delete-object',
+            changeObject: '#frontadmin-change-object',
         }
 
         $self.cookie = function(k, v) {
@@ -48,8 +49,8 @@ $(function(){
             var $this  = this;
             var cancel = $('<li class="cancel-button-container"><a class="cancel-link" href="#">Cancel</a></li>')
             cancel.find('a').bind('click.adminToolbar', function() {
-                if (!$elf.active_frame.hasClass('modified') || confirm('Close and discard modifications ?')) {
-                    $this.closeActiveFrame()
+                if (!$self.states.active_frame.hasClass('modified') || confirm('Close and discard modifications ?')) {
+                    $self.closeActiveFrame()
                 }
             })
 
@@ -63,13 +64,13 @@ $(function(){
                   })
                  .find('.submit-row').append(cancel).end()
                  .find('input[name="_continue"]').bind('click', function() {
-                     $elf.active_frame.addClass('saving continue')
+                     $self.states.active_frame.addClass('saving continue')
                  }).end()
                  .find('input[name="_save"]').bind('click', function() {
-                     $elf.active_frame.addClass('saving')
+                     $self.states.active_frame.addClass('saving')
                  }).end()
                  .find('.delete-link').bind('click', function() {
-                     $elf.active_frame.addClass('deleting')
+                     $self.states.active_frame.addClass('deleting')
                  }).end()
                  .find('input[name="_addanother"]').parent().hide().end().end()
              .end() 
@@ -117,6 +118,68 @@ $(function(){
                 $self.states.toolbars_visibles = show
                 $self.cookie('frontadmin_toolbars_visibles', show && true || false)
                 return false;
+            },
+
+            onObjectChange: function(){
+                var url = $(this).attr('href')
+                var el = $(this)
+                
+                // Open iframe window
+                $self.states.active_frame = $.iframeWindow(url, function() {
+                    var frame  = $(this)
+                    var doc    = frame.contents()
+                    var msg    = doc.find('#container > .messagelist')
+                    var block  = el.parents('.block-editable')
+                    var url    = document.location.href + ' #'+ block.attr('id')
+                    var errors = doc.find('.errornote').get(0)
+
+                    $self.cleanDocument(doc)
+
+                    // Save button has been clicked
+                    if ($(this).hasClass('saving')) {
+                        if (!errors) {
+                            if (!frame.hasClass('continue')) {
+                                $self.closeActiveFrame()
+                            }
+                            block.load(url, function() {
+                                block = $(this).children().unwrap()
+                                $this._bindEvents(block)
+                                //$.frontendMessage(msg.find('li:first').text())
+                            })
+                        }
+                        frame.removeClass('saving').removeClass('continue')
+                    }
+                    else if ($(this).hasClass('deleting')) {
+                        // Delete button has been clicked
+                        // User can now either cancel or confirm
+                        var cancel = doc.find('.left.cancel-button-container').removeClass('left').remove()
+                        doc.find('.cancel-button-container').replaceWith(cancel)
+                        doc.find('.cancel-link').unbind('click')
+                            .bind('click.adminToolbar', function(){
+                                frame.removeClass('deleting').removeClass('deleted')
+                            }).end().remove()
+                        // Confirm delete
+                        doc.find('.footer input[type=submit]').bind('click.adminToolbar', function() {
+                            frame.removeClass('deleting').addClass('deleted')
+                        })
+
+                    }
+                    else if (frame.hasClass('deleted')) {
+                        frame.removeClass('deleted')
+                        var errors = doc.find('.errornote').get(0)
+                        if (!errors) {
+                            $self.closeActiveFrame()
+                            $.frontendMessage(msg.find('li:first').text())
+                            block.slideUp('slow', function() {
+                                $(this).remove()
+                            })
+                        }
+                    }
+                    else {
+                        msg.find('li').css('border', 0)
+                    }
+                })
+                return false
             },
 
             // Triggered when a toolbar delete button is clicked
@@ -172,6 +235,7 @@ $(function(){
             $.each($self.toolbars, function(){
                 var doc = $(this).contents()
                 doc.find($self.buttons.deleteObject).bind('click.frontadmin', $self.events.onObjectDelete).end()
+                doc.find($self.buttons.changeObject).bind('click.frontadmin', $self.events.onObjectChange).end()
             })
         }
 

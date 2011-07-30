@@ -4,8 +4,8 @@
 <div class="frontadmin-toolbar">
     <span></span>
     <a id="frontadmin-delete-object" href="{{ delete_url }}" class="frontadmin-btn-delete" title="{% trans "Delete" %} {{ app_label }} {{ object_name }} ({% firstof object.title object.label object.name object.slug object.pk %})">{% trans "Delete" %}</a>
-    <a href="{{ change_url }}" title="{% trans "Edit" %} {{ app_label }} {{ object_name }} ({% firstof object.title object.label object.name object.slug object.pk %})">{% trans "Edit" %}</a>
-    <a href="{{ change_url }}" title="{% trans "Edit in admin" %}" target="_blank">{% trans "Admin" %}</a>
+    <a id="frontadmin-change-object" href="{{ change_url }}" title="{% trans "Edit" %} {{ app_label }} {{ object_name }} ({% firstof object.title object.label object.name object.slug object.pk %})">{% trans "Edit" %}</a>
+    <a id="frontadmin-admin-object" href="{{ change_url }}" title="{% trans "Edit in admin" %}" target="_parent">{% trans "Admin" %}</a>
     <a href="{{ history_link }}" title="{% trans "View change history" %}">{% trans "History" %}</a>
 </div>
 <style>{% include "frontadmin/toolbar.inc.css" %}</style>
