@@ -246,41 +246,12 @@ $(function(){
                 $self.states.active_frame = $.iframeWindow(url, function() {
                     var frame  = $(this)
                     var doc    = frame.contents()
-                    var msg    = doc.find('#container > .messagelist')
-                    var errors = doc.find('.errornote').get(0)
 
                     $self.cleanDocument(doc)
-
                     doc.find('body').append(ft)
                     doc.find('.cancel-button-container').bind('click', function(){
                         $self.closeActiveFrame()
                     })
-
-                    /*
-                    if (frame.hasClass('deleted')) {
-                        frame.removeClass('deleted')
-                        var errors = doc.find('.errornote').get(0)
-                        if (!errors) {
-                            $self.closeActiveFrame()
-                            //$.frontendMessage(msg.find('li:first').text())
-                            block.slideUp('slow', function() {
-                                $(this).remove()
-                            })
-                        }
-                    }
-                    else {
-                        var cancel = doc.find('.left.cancel-button-container').removeClass('left').remove()
-                        doc.find('.cancel-button-container').replaceWith(cancel)
-                        doc.find('.cancel-link').unbind('click')
-                            .bind('click.adminToolbar', function(){
-                                frame.removeClass('deleting').removeClass('deleted')
-                                $self.closeActiveFrame()
-                            }).end().remove()
-                        // Confirm delete
-                        doc.find('.footer input[type=submit]').bind('click.adminToolbar', function() {
-                            frame.removeClass('deleting').addClass('deleted')
-                        })
-                    }*/
                 })
                 return false
             }
