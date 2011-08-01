@@ -17,6 +17,10 @@ class NavNode(MPTTModel):
 #   is_visible = models.BooleanField(default=True)
     parent     = TreeForeignKey('self', null=True, blank=True, related_name='children')
 
+    def tree_id(self):
+        print self
+        print dir(self)
+
     def get_absolute_url(self):
         if self.url:
             if '://' in self.url:
@@ -31,4 +35,12 @@ class NavNode(MPTTModel):
     class Meta:
         verbose_name = 'Navigation node'
         verbose_name_plural = 'Navigation nodes'
+    
+    class MPTTMeta:
+        tree_manager_attr = 'tree'
+        left_attr = 'lft'
+        right_attr = 'rght'
+        tree_id_attr = 'tree_id'
+        level_attr = 'level'
+        parent_attr = 'parent'
 
