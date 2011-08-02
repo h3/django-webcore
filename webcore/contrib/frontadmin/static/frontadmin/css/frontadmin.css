@@ -9,7 +9,7 @@ html.frontadmin {
 .frontadmin-toolbar-frame {
     width: 100%;
     display: block;
-    height: 24px;
+    height: 30px;
     margin: 0 0 10px 0;
     border: 1px solid #ccc;
     -moz-box-shadow: 0 0 1px #fff;

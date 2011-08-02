@@ -3,14 +3,14 @@
 <iframe class="frontadmin-toolbar-frame">
 <div class="frontadmin-toolbar">
     <span></span>
-    <a id="frontadmin-delete-object" href="{{ delete_url }}" class="frontadmin-btn-delete" title="{% trans "Delete" %} {{ app_label }} {{ object_name }} ({% firstof object.title object.label object.name object.slug object.pk %})">{% trans "Delete" %}</a>
-    <a id="frontadmin-change-object" href="{{ change_url }}" title="{% trans "Edit" %} {{ app_label }} {{ object_name }} ({% firstof object.title object.label object.name object.slug object.pk %})">{% trans "Edit" %}</a>
-    <a id="frontadmin-admin-object" href="{{ change_url }}" title="{% trans "Edit in admin" %}" target="_parent">{% trans "Admin" %}</a>
-    <a id="frontadmin-history-object" href="{{ history_url }}" title="{% trans "View change history" %}">{% trans "History" %}</a>
+    <a id="frontadmin-delete-object" href="{{ delete_url }}" class="button red" title="{% trans "Delete" %} {{ app_label }} {{ object_name }} ({% firstof object.title object.label object.name object.slug object.pk %})">{% trans "Delete" %}</a>
+    <a id="frontadmin-change-object" href="{{ change_url }}" class="button" title="{% trans "Edit" %} {{ app_label }} {{ object_name }} ({% firstof object.title object.label object.name object.slug object.pk %})">{% trans "Edit" %}</a>
+    <a id="frontadmin-admin-object" href="{{ change_url }}" class="button" title="{% trans "Edit in admin" %}" target="_parent">{% trans "Admin" %}</a>
+    <a id="frontadmin-history-object" href="{{ history_url }}" class="button" title="{% trans "View change history" %}">{% trans "History" %}</a>
 </div>
-<input id="app_label" value="{{ app_label }}">
-<input id="object_name" value="{{ object_name }}">
-<input id="object_id" value="{{ object.pk }}">
+<input type="hidden" id="app_label" value="{{ app_label }}">
+<input type="hidden" id="object_name" value="{{ object_name }}">
+<input type="hidden" id="object_id" value="{{ object.pk }}">
 <style>{% include "frontadmin/toolbar.inc.css" %}</style>
 </iframe>
 {% endif %}
