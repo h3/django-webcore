@@ -12,6 +12,13 @@ register = template.Library()
 
 JS_LIBS = {
     'live': 'libs/devutils/live.js',
+    'jquery': 'libs/static/libs/jquery/jquery.min.js',
+    'jquerymobile': 'libs/jquerymobile/jquery.mobile-1.0.min.css',
+    'modernizr': 'libs/modernizr/modernizr.min.js',
+    'csspie': 'libs/PIE/PIE.js',
+    'jqueryui': 'libs/jqueryui/jquery-ui.min.js',
+    'colorbox': 'libs/colorbox/jquery.colorbox.min.js',
+    'colorbox_src': 'libs/colorbox/jquery.colorbox.js',
 }
 
 CSS_LIBS = {
@@ -29,23 +36,50 @@ CSS_LIBS = {
     '960_reset_rtl': 'libs/960/css/reset_rtl.css',
     '960_text': 'libs/960/css/text.css',
     '960_text_rtl': 'libs/960/css/text_rtl.css',
+
+    # colorbox
+    'colorbox_theme1': 'libs/colorbox/theme1/colorbox.css',
+    'colorbox_theme2': 'libs/colorbox/theme2/colorbox.css',
+    'colorbox_theme3': 'libs/colorbox/theme3/colorbox.css',
+    'colorbox_theme4': 'libs/colorbox/theme4/colorbox.css',
+    'colorbox_theme5': 'libs/colorbox/theme5/colorbox.css',
+    
+    # jquery ui
+    'ui_lightness': 'libs/jqueryui/ui-lightness/jquery-ui-1.8.14.custom.css',
+    'ui_darkness': 'libs/jqueryui/ui-darkness/jquery-ui-1.8.14.custom.css',
+    
 }
 
+def tagfactory(paths, base, template):
+    out = []
+    for src in paths.split(' '):
+        out.append(template % (base, src))
+    return "\n".join(out)
+
+
+@register.simple_tag
+def js(paths, root='media'):
+    base = root == 'static' and settings.STATIC_URL or settings.MEDIA_URL
+    return tagfactory(paths, base, '<script src="%s%s"></script>')
+
+
+@register.simple_tag
+def css(paths, root='media'):
+    base = root == 'static' and settings.STATIC_URL or settings.MEDIA_URL
+    return tagfactory(paths, base, '<link rel="stylesheet" href="%s%s" />')
 
 @register.simple_tag
 def csslib(k):
-    TPL = '<link rel="stylesheet" href="%s%s" />'
     out = []
     for lib in k.split(' '):
         try:
-            out.append(TPL % (settings.STATIC_URL, CSS_LIBS[lib]))
+            out.append(CSS_LIBS[lib])
         except:
             pass
-    return "\n".join(out)
+    return css(" ".join(out), 'static')
 
 @register.simple_tag
 def jslib(k):
-    TPL = '<script type="text/javascript" src="%s%s"></script>'
     out = []
     for lib in k.split(' '):
         try:
@@ -55,4 +89,4 @@ def jslib(k):
                 out.append(TPL % (settings.STATIC_URL, JS_LIBS[lib]))
         except:
             pass
-    return "\n".join(out)
+    return js(" ".join(out), 'static')
