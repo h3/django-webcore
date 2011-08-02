@@ -268,7 +268,6 @@ $(function(){
         $self.bindBarEvents = function() {
             var doc = $self.bar.contents()
             if ($('html').hasClass('frontadmin-show-toolbars')) {
-                console.log('a', doc.find($self.buttons.toggle))
                 doc.find($self.buttons.toggle).addClass('active')
             }
             doc.find($self.buttons.logout).bind('click.frontadmin', $self.events.onLogout).end()
