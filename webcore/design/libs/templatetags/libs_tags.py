@@ -11,14 +11,14 @@ register = template.Library()
 
 
 JS_LIBS = {
-    'live': 'libs/devutils/live.js',
-    'jquery': 'libs/static/libs/jquery/jquery.min.js',
-    'jquerymobile': 'libs/jquerymobile/jquery.mobile-1.0.min.css',
-    'modernizr': 'libs/modernizr/modernizr.min.js',
     'csspie': 'libs/PIE/PIE.js',
-    'jqueryui': 'libs/jqueryui/jquery-ui.min.js',
     'colorbox': 'libs/colorbox/jquery.colorbox.min.js',
     'colorbox_src': 'libs/colorbox/jquery.colorbox.js',
+    'jquery': 'libs/static/libs/jquery/jquery.min.js',
+    'jquerymobile': 'libs/jquerymobile/jquery.mobile-1.0.min.css',
+    'jqueryui': 'libs/jqueryui/jquery-ui.min.js',
+    'live': 'libs/devutils/live.js',
+    'modernizr': 'libs/modernizr/modernizr.min.js',
 }
 
 CSS_LIBS = {
