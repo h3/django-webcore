@@ -1,0 +1,66 @@
+/* Webcore frontadmin's general styles
+ * Author: Maxime Haineault <max@motion-m.ca>
+ * (c) 2011 Motion Média
+ * */
+html.frontadmin {
+    padding-bottom: 30px;
+}
+
+.frontadmin-toolbar-frame {
+    width: 100%;
+    display: block;
+    height: 24px;
+    margin: 0 0 10px 0;
+    border: 1px solid #ccc;
+    -moz-box-shadow: 0 0 1px #fff;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -o-border-radius: 2px;
+    border-radius: 2px;
+    opacity: 0.6;
+    display: none;
+}
+.frontadmin-show-toolbars .front-admin-block:hover .frontadmin-toolbar-frame,
+.frontadmin-show-toolbars .frontadmin-toolbar-frame:hover {
+    opacity: 1.0;
+}
+
+.frontadmin-show-toolbars .frontadmin-toolbar-frame,
+.frontadmin-show-toolbars .front-admin-block {
+    display: block;
+}
+
+
+.frontadmin-show-toolbars .front-admin-block:hover {
+    background: #def;
+}
+
+.frontadmin-show-toolbars .frontadmin-block-content {
+    cursor: pointer;
+}
+
+/* Main frontadmin bar */
+#frontadmin-bar-frame {
+    width: 70%;
+    display: block;
+    height: 34px;
+    margin: 0;
+    position: fixed;
+    bottom: -1px;
+    border: 2px solid #ccc;
+    -moz-box-shadow: 0 0 1px #fff;
+    -moz-border-radius: 2px 2px 0 0;
+    -webkit-border-radius: 2px 2px 0 0;
+    -o-border-radius: 2px 2px 0 0;
+    border-radius: 2px 2px 0 0;
+}
+
+/* Editing popups */
+#frontadmin-iframe-window {
+    border: 1px solid #555;
+    -moz-box-shadow: 0 0 100px #fff;
+    -webkit-box-shadow: 0 0 100px #fff;
+    -o-box-shadow: 0 0 100px #fff;
+    box-shadow: 0 0 100px #fff;
+}
+

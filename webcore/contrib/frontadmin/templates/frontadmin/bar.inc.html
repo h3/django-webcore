@@ -2,6 +2,7 @@
 {% load i18n %}
 <iframe id="frontadmin-bar-frame">
 <div class="frontadmin-bar">
+    <img src="{{ STATIC_URL }}frontadmin/img/wc-small.png" id="logo">
     <span>
         {% trans "Logged in as " %} 
         {% if user.first_name or user.last_name %}
@@ -13,7 +14,7 @@
     <a id="frontadmin-btn-logout" href="{% url admin:logout %}" title="{% trans "Disconnect" %}" class="button red">{% trans "Disconnect" %}</a>
     <a id="frontadmin-btn-admin" href="{% url admin:index %}" title="{% trans "Edit in admin" %}" class="button" target="_parent">{% trans "Admin" %}</a>
     {#<a id="frontadmin-btn-metas" href="#" title="{% trans "Edit page metas" %}" class="button">{% trans "Metas" %}</a>#}
-    <a id="frontadmin-btn-toggle" href="#" title="{% trans "Show editable blocks" %}" class="button">{% trans "Edit mode" %}</a>
+    <a id="frontadmin-btn-toggle" href="#" title="{% trans "Show editable blocks" %}" class="button">{% trans "Edit" %}</a>
 </div>
 <style>{% include "frontadmin/bar.inc.css" %}</style>
 </iframe>

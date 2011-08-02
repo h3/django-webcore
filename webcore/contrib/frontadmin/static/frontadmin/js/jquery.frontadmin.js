@@ -20,6 +20,15 @@ $(function(){
             objectHistory: '#frontadmin-history-object',
         }
 
+        $self.clearSelection = function() {
+            if(document.selection && document.selection.empty) {
+                document.selection.empty();
+            } else if(window.getSelection) {
+                var sel = window.getSelection();
+                sel.removeAllRanges();
+            }
+        }
+
         $self.cookie = function(k, v) {
             if (v) { return $.cookie(k, v, {path: '/'}) }
             else   { return $.cookie(k,    {path: '/'}) }
@@ -243,10 +252,9 @@ $(function(){
                             '<li class="cancel-button-container"><a href="#" class="cancel-link">Close</a></li>',
                         '</ul><br clear="all">',
                     '</div>'].join(''))
-                $self.states.active_frame = $.iframeWindow(url, function() {
-                    var frame  = $(this)
-                    var doc    = frame.contents()
 
+                $self.states.active_frame = $.iframeWindow(url, function() {
+                    var doc = $(this).contents()
                     $self.cleanDocument(doc)
                     doc.find('body').append(ft)
                     doc.find('.cancel-button-container').bind('click', function(){
@@ -282,6 +290,7 @@ $(function(){
 
         return {
             init: function() {
+                $('html').addClass('frontadmin')
                 $self.events.onWindowResize()
                 $(window).resize($self.events.onWindowResize)
 
@@ -292,6 +301,13 @@ $(function(){
 
                 $self.bindBarEvents()
                 $self.bindToolbarEvents()
+                
+                $('.frontadmin-block-content').bind('dblclick', function(){
+                    var doc = $(this).parent().find('.frontadmin-toolbar-frame').contents()
+                    $self.clearSelection()
+                    $self.events.onObjectChange.apply(doc.find('#frontadmin-change-object').get(0))
+                    return false;
+                })
 
                 $('html')[($self.states.toolbars_visibles == true && 'addClass' || 'removeClass')]('frontadmin-show-toolbars')
                 $self.states.initialized = true
