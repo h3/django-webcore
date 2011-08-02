@@ -10,6 +10,7 @@ html, body {
     font-family: Arial,sans-serif;
     color: #eee;
     background: #333;
+    overflow: hidden;
     filter:  progid:DXImageTransform.Microsoft.gradient(startColorStr='#555555', EndColorStr='#333333'); 
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#555555', EndColorStr='#333333')";
     -pie-background: linear-gradient(top, #555555, #333333);

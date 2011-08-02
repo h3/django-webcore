@@ -7,6 +7,7 @@ html, body {
     margin: 0;
     padding: 0;
     height: 30px;
+    overflow: hidden;
     font-family: Arial,sans-serif;
     background: #333;
     filter:  progid:DXImageTransform.Microsoft.gradient(startColorStr='#555555', EndColorStr='#333333'); 
