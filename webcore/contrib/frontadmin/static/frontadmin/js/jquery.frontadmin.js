@@ -267,6 +267,10 @@ $(function(){
 
         $self.bindBarEvents = function() {
             var doc = $self.bar.contents()
+            if ($('html').hasClass('frontadmin-show-toolbars')) {
+                console.log('a', doc.find($self.buttons.toggle))
+                doc.find($self.buttons.toggle).addClass('active')
+            }
             doc.find($self.buttons.logout).bind('click.frontadmin', $self.events.onLogout).end()
                .find($self.buttons.toggle).bind('click.frontadmin', $self.events.onToggleToolbar).end()
         }
@@ -299,6 +303,8 @@ $(function(){
                     $(this).contents().find('body').html($(this).text())
                 })
 
+                $('html')[($self.states.toolbars_visibles == true && 'addClass' || 'removeClass')]('frontadmin-show-toolbars')
+
                 $self.bindBarEvents()
                 $self.bindToolbarEvents()
                 
@@ -309,7 +315,6 @@ $(function(){
                     return false;
                 })
 
-                $('html')[($self.states.toolbars_visibles == true && 'addClass' || 'removeClass')]('frontadmin-show-toolbars')
                 $self.states.initialized = true
             }
         }
@@ -329,7 +334,7 @@ $(function(){
             left: 50,
             right: 50,
             bottom: 50,
-            zIndex: 99999
+           zIndex: 99999
         }).appendTo('body')
           
         var resize = function() {

@@ -16,9 +16,6 @@ html, body {
     background: -moz-linear-gradient(top,  #555555,  #333333);
 }
 
-.frontadmin-toolbar {
-}
-
 a.button {
     background: #999;
     text-shadow: 1px 1px 1px #fff;
