@@ -2,7 +2,7 @@
 {% load i18n %}
 <iframe id="frontadmin-bar-frame">
 <div class="frontadmin-bar">
-    <img src="{{ STATIC_URL }}frontadmin/img/wc-small.png" id="logo">
+    <img src="{{ STATIC_URL }}frontadmin/img/wc-small.png" id="logo" class="frontadmin-toggle-bar">
     <span>
         {% trans "Logged in as " %} 
         {% if user.first_name or user.last_name %}

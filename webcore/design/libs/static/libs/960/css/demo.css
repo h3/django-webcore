@@ -1,36 +1,8 @@
-.container_12,
-.container_16,
-.container_24 {
+.container_12 { background-image: url(../img/12_col.gif); }
+.container_16 { background-image: url(../img/16_col.gif); }
+.container_24 { background-image: url(../img/24_col.gif); }
+.container_12, .container_16, .container_24 {
   background-color: #fff;
   background-repeat: repeat-y;
   margin-bottom: 20px;
-}
-.container_12.border p,
-.container_16.border p,
-.container_24.border p {
-    border: 1px solid #cce;
-    text-align: center;
-    padding: 6px 10px;
-    font-weight: bold;
-    margin-bottom: 8px;
-    background: #f4f4f4;
-    opacity: 0.7;
-}
-.border h2,
-.border h3 {
-    text-align: center;
-    background: #f4f4f4;
-    border: 1px solid #ccc;
-}
-
-.container_12 {
-  background-image: url(../img/12_col.gif);
-}
-
-.container_16 {
-  background-image: url(../img/16_col.gif);
-}
-
-.container_24 {
-  background-image: url(../img/24_col.gif);
 }

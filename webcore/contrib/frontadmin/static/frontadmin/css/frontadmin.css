@@ -34,7 +34,7 @@ html.frontadmin {
 }
 
 .frontadmin-show-toolbars .front-admin-block:hover {
-    background: #def;
+    background-color: #def!important;
 }
 
 .frontadmin-show-toolbars .frontadmin-block-content {
@@ -48,6 +48,7 @@ html.frontadmin {
     height: 34px;
     margin: 0;
     position: fixed;
+    right: 0;
     bottom: -1px;
     border: 2px solid #ccc;
     z-index: 100000;

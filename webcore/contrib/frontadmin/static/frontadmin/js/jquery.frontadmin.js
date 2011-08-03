@@ -15,6 +15,7 @@ $(function(){
         $self.buttons = {
             logout: '#frontadmin-btn-logout',
             toggle: '#frontadmin-btn-toggle',
+            toggleBar: '.frontadmin-toggle-bar',
             deleteObject: '#frontadmin-delete-object',
             changeObject: '#frontadmin-change-object',
             objectHistory: '#frontadmin-history-object',
@@ -93,13 +94,9 @@ $(function(){
                 $self.toolbars.each(function(){
                     $(this).width($(this).parent().width())
                 })
-                var ww = $(document).width()
-                var w =  parseInt(ww / 3)
-                // Min width
-                if (w < 300) { w = 300 }
-
+                var w =  parseInt($(document).width() / 3)
+                if (w < 450) { w = 450 }
                 $self.bar.width(w)
-                    .css('margin-left', ww / 2 - (w / 2))
             },
             
             // Log the user out and hide frontadmin
@@ -127,6 +124,19 @@ $(function(){
                 $self.cookie('frontadmin_toolbars_visibles', show && 'true' || 'false')
                 $self.states.toolbars_visibles = show
                 $self.cookie('frontadmin_toolbars_visibles', show && true || false)
+                return false;
+            },
+
+            onToggleBar: function(e){
+                var bar = $('#frontadmin-bar-frame')
+                if (bar.hasClass('minimized')) {
+                    var w =  parseInt($(document).width() / 3)
+                    if (w < 450) { w = 450 }
+                    bar.removeClass('minimized').animate({width: w}).fadeTo('fast', 1.0)
+                }
+                else {
+                    bar.addClass('minimized').animate({width: 36}).fadeTo('fast', 0.5)
+                }
                 return false;
             },
 
@@ -272,6 +282,7 @@ $(function(){
             }
             doc.find($self.buttons.logout).bind('click.frontadmin', $self.events.onLogout).end()
                .find($self.buttons.toggle).bind('click.frontadmin', $self.events.onToggleToolbar).end()
+               .find($self.buttons.toggleBar).bind('click.frontadmin', $self.events.onToggleBar).end()
         }
         
         $self.bindToolbarEvents = function(toolbar) {
