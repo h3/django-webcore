@@ -1,0 +1,14 @@
+include LICENSE
+recursive-include webcore/templates *
+recursive-include webcore/design/libs/static *
+recursive-include webcore/design/colors/templates *
+recursive-include webcore/design/colors/static *
+recursive-include webcore/design/html5boilerplate/templates *
+recursive-include webcore/design/html5boilerplate/static *
+recursive-include webcore/contrib/frontadmin/templates *
+recursive-include webcore/contrib/frontadmin/static *
+recursive-include webcore/contrib/google_analytics/templates *
+recursive-include webcore/contrib/google_analytics/static *
+recursive-include webcore/contrib/django_generic_flatblocks/templates *
+recursive-include webcore/contrib/django_generic_flatblocks/static *
+recursive-include webcore/contrib/django_generic_flatblocks/contrib/gblocksvntemplates *
