@@ -26,7 +26,7 @@
 
 {% block project.body %}
 {% block content.wrapper %}
-<div class="container_12">
+<div id="project-body" class="container_12">
     {% block app.head %}{% endblock %}
     {% block content %}{% endblock %}
 </div> 
@@ -37,9 +37,9 @@
 {% block footer.wrapper %}
 <div class="container_12">
     {% block app.footer %}{% endblock %}
-    <div id="footer">
+    <div id="project-footer">
         <div id="copyright" class="clearfix">
-            &copy; {% now "Y" %} {% trans "All rights reserved" %} {% trans "Conception" %}: <a href="http://motion-m.ca" target="_blank" title="{% trans "Website created and maintained by Motion Média" %}"><img alt="Motion Média" src="{{ MEDIA_URL }}img/motion-small.png" title="Motion Média"></a>
+            &copy; {% now "Y" %} {% trans "All rights reserved" %} SITE_NAME
         </div>
     </div>
 </div> 
