@@ -1,0 +1,29 @@
+# Required
+# --------
+django==1.3
+PIL
+Markdown
+simplejson
+django-mptt
+django-generic-flatblocks
+easy-thumbnails
+
+# Suggested
+# ---------
+# django-extensions
+# django-grappelli
+# -e svn+http://grappelli-fit.googlecode.com/svn/trunk#egg=grappellifit
+# -e git+git://github.com/mintchaos/django_compressor.git#egg=django_compressor
+
+# Socialauth
+# ----------
+# django-socialregistration
+# django-userena
+# python-openid
+# oauth2 
+
+# Advanced
+# --------
+# django-guardian
+# django-reversion
+# django-sentry
