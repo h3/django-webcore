@@ -17,7 +17,7 @@ JS_LIBS = {
     'jquery': 'libs/static/libs/jquery/jquery.min.js',
     'jquerymobile': 'libs/jquerymobile/jquery.mobile-1.0.min.css',
     'jqueryui': 'libs/jqueryui/jquery-ui.min.js',
-    'live': 'libs/devutils/live.js',
+    'live': 'libs/devutils/live.js?notify',
     'modernizr': 'libs/modernizr/modernizr.min.js',
 }
 
@@ -82,11 +82,14 @@ def csslib(k):
 def jslib(k):
     out = []
     for lib in k.split(' '):
+        print lib
+        print settings.DEBUG
         try:
             if lib == 'live' and settings.DEBUG == False:
                 continue
             else:
-                out.append(TPL % (settings.STATIC_URL, JS_LIBS[lib]))
+                out.append(JS_LIBS[lib])
         except:
             pass
+    print " ".join(out)
     return js(" ".join(out), 'static')

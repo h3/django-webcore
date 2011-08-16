@@ -22,6 +22,34 @@
 */
 (function () {
 
+  var msg = function(i) {
+      try {
+          var d = $('<div>').appendTo('body').hide(function(){
+              d.text(i)
+              d.css({
+                fontSize: '10px',
+                position: 'fixed',
+                bottom: 0,
+                left: 0,
+                background: '#c30',
+                color: '#fff',
+                padding: '4px 8px'
+              }).slideDown('fast')
+          }).bind('click', function(){
+              $(this).slideUp('fast')
+          })
+      }
+      catch(e) {
+          try {
+              console.log(i)
+          }
+          catch(e) {
+              alert(i)
+          }
+      }
+      
+  }
+
   var headers = { "Etag": 1, "Last-Modified": 1, "Content-Length": 1, "Content-Type": 1 },
       resources = {},
       pendingRequests = {},
@@ -45,7 +73,6 @@
 
     // loads all local css and js resources upon first activation
     loadresources: function () {
-
       // helper method to assert if a given url is local
       function isLocal(url) {
         var loc = document.location,
@@ -61,14 +88,13 @@
       // track local js urls
       for (var i = 0; i < scripts.length; i++) {
         var script = scripts[i], src = script.getAttribute("src");
-        console.log('SRC::', src, script)
         if (src && isLocal(src))
           uris.push(src);
-        if (src && src.match(/\blive.js#/)) {
+        if (src && src.match(/live\.js(\?|$)/)) {
           for (var type in active)
             active[type] = src.match("[#,|]" + type) != null
           if (src.match("notify")) 
-            alert("Live.js is loaded.");
+            msg("Live.js is loaded.");
         }
       }
       if (!active.js) uris = [];
@@ -87,7 +113,6 @@
       for (var i = 0; i < uris.length; i++) {
         var url = uris[i];
         // Django's dev server doesn't allow HEAD on root path
-        console.log(url)
         if (window.location.pathname != url) {
             Live.getHead(url, function (url, info) {
               resources[url] = info;
@@ -143,6 +168,11 @@
 
     // act upon a changed url of certain content type
     refreshResource: function (url, type) {
+      if (typeof(type) == 'undefined') {
+        if (/\.js(\?|$)/.test(url))                 type = 'text/javascript'
+        else if (/\.css\?|$/.test(url))             type = 'text/css'
+        else if (/\.(html|htm)(\?|$|#)/.test(url))  type = 'text/html'
+      }
       switch (type.toLowerCase()) {
         // css files can be reloaded dynamically by replacing the link element                               
         case "text/css":
