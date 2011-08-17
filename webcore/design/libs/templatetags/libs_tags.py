@@ -17,7 +17,7 @@ JS_LIBS = {
     'jquery': 'libs/static/libs/jquery/jquery.min.js',
     'jquerymobile': 'libs/jquerymobile/jquery.mobile-1.0.min.css',
     'jqueryui': 'libs/jqueryui/jquery-ui.min.js',
-    'live': 'libs/devutils/live.js?notify',
+    'live': 'libs/devutils/live.js?notify#html|css|js',
     'modernizr': 'libs/modernizr/modernizr.min.js',
 }
 

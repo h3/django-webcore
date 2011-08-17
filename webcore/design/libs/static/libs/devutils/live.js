@@ -77,7 +77,7 @@
       function isLocal(url) {
         var loc = document.location,
             reg = new RegExp("^\\.|^\/(?!\/)|^[\\w]((?!://).)*$|" + loc.protocol + "//" + loc.host);
-        return url.match(reg);
+        return reg.test(url);
       }
 
       // gather all resources
@@ -97,13 +97,12 @@
             msg("Live.js is loaded.");
         }
       }
-      if (!active.js) uris = [];
+      if (active.js != false) uris = [];
       if (active.html) uris.push(document.location.href);
-
       // track local css urls
       for (var i = 0; i < links.length && active.css; i++) {
         var link = links[i], rel = link.getAttribute("rel"), href = link.getAttribute("href", 2);
-        if (href && rel && rel.match(new RegExp("stylesheet", "i")) && isLocal(href)) {
+        if (href && rel && (new RegExp("stylesheet", "i")).test(rel) && isLocal(href)) {
           uris.push(href);
           currentLinkElements[href] = link;
         }
