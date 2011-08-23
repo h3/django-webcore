@@ -8,7 +8,7 @@ if 'grappellifit' in settings.INSTALLED_APPS:
     
     admin.site.register(Title, TranslationAdmin)
     admin.site.register(Text, TranslationAdmin)
-    admin.site.register(Image, TranslationAdmin)
+    admin.site.register(Image)
     admin.site.register(TitleAndText, TranslationAdmin)
     admin.site.register(TitleTextAndImage, TranslationAdmin)
 
