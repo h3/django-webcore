@@ -50,10 +50,12 @@ $(function(){
         }
 
         $self.closeActiveFrame = function() {
-            $self.states.active_frame.parent().fadeOut(function(){
-                $self.states.active_frame.parent().remove()
-                $self.states.active_frame = false
-            })
+            if (!$self.states.active_frame.hasClass('modified') || confirm('Close and discard modifications ?')) {
+                $self.states.active_frame.parent().fadeOut(function(){
+                    $self.states.active_frame.parent().remove()
+                    $self.states.active_frame = false
+                })
+            }
         }
 
         // Remove toolbars and useless stuff in window mode
@@ -62,9 +64,7 @@ $(function(){
             var $this  = this;
             var cancel = $('<li class="cancel-button-container"><a class="cancel-link" href="#">Cancel</a></li>')
             cancel.find('a').bind('click.adminToolbar', function() {
-                if (!$self.states.active_frame.hasClass('modified') || confirm('Close and discard modifications ?')) {
-                    $self.closeActiveFrame()
-                }
+                $self.closeActiveFrame()
                 return false
             })
             if (d.find('#changelist').get(0)) {
@@ -73,6 +73,13 @@ $(function(){
                    d.find('#submit').append('<ul class="submit-row" />')
                }
             }
+
+            d.bind('keydown', function(e) {
+                if (e.keyCode == 27) {
+                    $self.closeActiveFrame()
+                    return false
+                }
+            })
 
             d.find('#header, #breadcrumbs').remove().end()
              .find('body').css({paddingTop: 0}).end()
