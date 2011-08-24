@@ -18,7 +18,8 @@ $(function(){
             toggleBar: '.frontadmin-toggle-bar',
             deleteObject: '#frontadmin-delete-object',
             changeObject: '#frontadmin-change-object',
-            objectHistory: '#frontadmin-history-object',
+            objectHistory: '#frontadmin-history-changelist',
+            changelist: '#frontadmin-changelist',
         }
 
         $self.clearSelection = function() {
@@ -50,7 +51,9 @@ $(function(){
 
         $self.closeActiveFrame = function() {
             $self.states.active_frame.parent().fadeOut(function(){
-                $(this).remove()
+                console.log($self.states.active_frame.parent())
+                $self.states.active_frame.parent().remove()
+                $self.states.active_frame = false
             })
         }
 
@@ -63,7 +66,14 @@ $(function(){
                 if (!$self.states.active_frame.hasClass('modified') || confirm('Close and discard modifications ?')) {
                     $self.closeActiveFrame()
                 }
+                return false
             })
+            if (d.find('#changelist').get(0)) {
+               var changelist = true;
+               if (!d.find('#submit').find('.submit-row').get(0)) {
+                   d.find('#submit').append('<ul class="submit-row" />')
+               }
+            }
 
             d.find('#header, #breadcrumbs').remove().end()
              .find('body').css({paddingTop: 0}).end()
@@ -207,6 +217,73 @@ $(function(){
                 return false
             },
 
+            onChangelist: function(){
+                var url = $(this).attr('href')
+                var el = $(this)
+                var bd = $(this).parents('body')
+                var block = $("#frontadmin-"+ bd.find('#app_label').val() 
+                              +"-"+ bd.find('#app_model').val())
+                var content = block.find('.frontadmin-block-content')
+
+                // Open iframe window
+                $self.states.active_frame = $.iframeWindow(url, function() {
+                    var frame  = $(this)
+                    var doc    = frame.contents()
+                    var msg    = doc.find('#container > .messagelist')
+                    var url    = document.location.href + ' #'+ block.attr('id')
+                    var errors = doc.find('.errornote').get(0)
+
+                    // Save button has been clicked
+                    if (frame.hasClass('saving')) {
+                        if (!errors) {
+                            if (!frame.hasClass('continue')) {
+                                $self.closeActiveFrame()
+                            }
+                            content.load(url, function() {
+                                content.find('.frontadmin-toolbar-frame').remove()
+                                content = frame.children().unwrap()
+                                //$self.bindToolbarEvents(content.parent().find('iframe'))
+                                //$.frontendMessage(msg.find('li:first').text())
+                            })
+                        }
+                        frame.removeClass('saving').removeClass('continue')
+                    }
+                    else if ($(this).hasClass('deleting')) {
+                        // Delete button has been clicked
+                        // User can now either cancel or confirm
+                        var cancel = doc.find('.left.cancel-button-container').removeClass('left').remove()
+                        doc.find('.cancel-button-container').replaceWith(cancel)
+                        doc.find('.cancel-link').unbind('click')
+                            .bind('click.adminToolbar', function(){
+                                frame.removeClass('deleting').removeClass('deleted')
+                            }).end().remove()
+                        // Confirm delete
+                        doc.find('.footer input[type=submit]').bind('click.adminToolbar', function() {
+                            frame.removeClass('deleting').addClass('deleted')
+                        })
+
+                    }
+                    else if (frame.hasClass('deleted')) {
+                        frame.removeClass('deleted')
+                        var errors = doc.find('.errornote').get(0)
+                        if (!errors) {
+                            $self.closeActiveFrame()
+                            $.frontendMessage(msg.find('li:first').text())
+                            block.slideUp('slow', function() {
+                                $(this).remove()
+                            })
+                        }
+                    }
+                    else {
+                        msg.find('li').css('border', 0)
+                    }
+                })
+                $self.states.active_frame.bind('load', function(){
+                    $self.cleanDocument($self.states.active_frame.contents())
+                })
+                return false
+            },
+
             // Triggered when a toolbar delete button is clicked
             onObjectDelete: function() {
                 var url = $(this).attr('href')
@@ -252,7 +329,7 @@ $(function(){
             },
 
             // Triggered when a toolbar historybutton is clicked
-            onObjectHistory: function() {
+            onObjectHistory: function() { console.log('ESTI')
                 var url = $(this).attr('href')
                 var el = $(this)
                 var bd = $(this).parents('body')
@@ -288,9 +365,10 @@ $(function(){
         $self.bindToolbarEvents = function(toolbar) {
             function bind(tb){
                 var doc = $(tb).contents()
-                doc.find($self.buttons.deleteObject).bind('click.frontadmin', $self.events.onObjectDelete).end()
-                   .find($self.buttons.changeObject).bind('click.frontadmin', $self.events.onObjectChange).end()
+                doc.find($self.buttons.deleteObject).bind('click.frontadmin',  $self.events.onObjectDelete).end()
+                   .find($self.buttons.changeObject).bind('click.frontadmin',  $self.events.onObjectChange).end()
                    .find($self.buttons.objectHistory).bind('click.frontadmin', $self.events.onObjectHistory).end()
+                   .find($self.buttons.changelist).bind('click.frontadmin',    $self.events.onChangelist).end()
             }
             if (toolbar) {
                 bind(toolbar)

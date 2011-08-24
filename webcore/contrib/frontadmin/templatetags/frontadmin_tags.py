@@ -5,6 +5,7 @@ from django import template
 from django.template import RequestContext, Context
 from django.conf import settings
 from django.core.urlresolvers import reverse
+from django.utils.safestring import SafeUnicode
 #from django.core.urlresolvers import RegexURLResolver, reverse
 #from django.utils.safestring import SafeString
 #from django.utils.translation import gettext as _
@@ -23,21 +24,38 @@ def frontadmin_bar(request):
 
 @register.simple_tag()
 def frontadmin_toolbar(request, obj):
-    app_label = obj._meta.app_label
-    object_name = obj._meta.object_name.lower()
-    t = loader.select_template([
-            "frontadmin/toolbar.inc.html",
-            "frontadmin/%s/toolbar.inc.html" % app_label, 
-            "frontadmin/%s/%s/toolbar.inc.html" % (app_label, object_name),
-        ])
-    return t.render(RequestContext(request, {
-        'app_label': app_label,
-        'object_name': object_name,
-        'object': obj,
-        'delete_url': reverse('admin:%s_%s_delete' % (app_label, object_name), args=(obj.id,)),
-        'change_url': reverse('admin:%s_%s_change' % (app_label, object_name), args=(obj.id,)),
-        'history_url': reverse('admin:%s_%s_history' % (app_label, object_name), args=(obj.id,)),
-    }))
+
+    # Changelist admin
+    if isinstance(obj, SafeUnicode):
+        print obj
+        app_label = obj.split('.')[0].lower()
+        app_model = obj.split('.')[1].lower()
+        t = loader.select_template([
+                "frontadmin/toolbar.inc.html",
+                "frontadmin/%s/toolbar.inc.html" % app_label, 
+            ])
+        return t.render(RequestContext(request, {
+            'app_label': app_label,
+            'app_model': app_model,
+            'changelist_url': reverse('admin:%s_%s_changelist' % (app_label, app_model)),
+        }))
+    # Object admin
+    else:
+        app_label = obj._meta.app_label
+        object_name = obj._meta.object_name.lower()
+        t = loader.select_template([
+                "frontadmin/toolbar.inc.html",
+                "frontadmin/%s/toolbar.inc.html" % app_label, 
+                "frontadmin/%s/%s/toolbar.inc.html" % (app_label, object_name),
+            ])
+        return t.render(RequestContext(request, {
+            'app_label': app_label,
+            'object_name': object_name,
+            'object': obj,
+            'delete_url': reverse('admin:%s_%s_delete' % (app_label, object_name), args=(obj.id,)),
+            'change_url': reverse('admin:%s_%s_change' % (app_label, object_name), args=(obj.id,)),
+            'history_url': reverse('admin:%s_%s_history' % (app_label, object_name), args=(obj.id,)),
+        }))
 
 
 
@@ -64,12 +82,15 @@ class CaptureasNode(template.Node):
         request = self.request.resolve(context)
        #context['toolbar'] = frontadmin_toolbar(request, var)
         output = self.nodelist.render(context)
+
+        if isinstance(var, SafeUnicode):
+            css_class = var.replace('.', '-').lower()
+        else:
+            css_class = '%s-%s-%s' % (var._meta.app_label, var._meta.object_name.lower(), var.pk)
+
         return """
-        <div id="frontadmin-%s-%s-%s" class="front-admin-block">
+        <div id="frontadmin-%s" class="front-admin-block">
             %s<div class="frontadmin-block-content">%s</div>
-        </div>""" % (
-                var._meta.app_label,
-                var._meta.object_name.lower(),
-                var.pk,
+        </div>""" % (css_class,
                 frontadmin_toolbar(request, var),
                 output,)
