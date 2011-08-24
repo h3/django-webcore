@@ -18,7 +18,7 @@ $(function(){
             toggleBar: '.frontadmin-toggle-bar',
             deleteObject: '#frontadmin-delete-object',
             changeObject: '#frontadmin-change-object',
-            objectHistory: '#frontadmin-history-changelist',
+            objectHistory: '#frontadmin-history-object',
             changelist: '#frontadmin-changelist',
         }
 
@@ -329,6 +329,7 @@ $(function(){
 
             // Triggered when a toolbar historybutton is clicked
             onObjectHistory: function() {
+                console.log('history', this)
                 var url = $(this).attr('href')
                 var el = $(this)
                 var bd = $(this).parents('body')
