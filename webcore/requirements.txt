@@ -12,7 +12,7 @@ django-grappelli
 -e svn+http://grappelli-fit.googlecode.com/svn/trunk#egg=grappelli-fit
 -e git+git://github.com/django-mptt/django-mptt.git#egg=django-mptt
 -e git+git@github.com:h3/django-treenav.git#egg=django-treenav
-#django-mptt
+-e git+git://github.com/h3/webcore-generic-flatblocks.git#egg=django-generic-flatblocks
 
 # Suggested
 # ---------
