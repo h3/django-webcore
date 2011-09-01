@@ -25,5 +25,5 @@
     {% endif %}
     {# Next #}
     {% if page_obj.has_next or has_next %}
-    <li class="pagination-next"><a href="../{% firstof next page_obj.next_page_number %}/{% if request.META.QUERY_STRING %}?{{ request.META.QUERY_STRING }}{% endif %}" title="{% trans "Next page" %}">A{% trans "Next" %} &raquo;</a></li>
+    <li class="pagination-next"><a href="../{% firstof next page_obj.next_page_number %}/{% if request.META.QUERY_STRING %}?{{ request.META.QUERY_STRING }}{% endif %}" title="{% trans "Next page" %}">{% trans "Next" %} &raquo;</a></li>
 {% endif %}</ol>{% endspaceless %}{% endif %}
