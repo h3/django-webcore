@@ -22,21 +22,32 @@
 */
 (function () {
 
+  var suspended = false
+
   var msg = function(i) {
       try {
           var d = $('<div>').appendTo('body').hide(function(){
               d.text(i)
               d.css({
                 fontSize: '10px',
+                fontWeight: 'bold',
                 position: 'fixed',
                 bottom: 0,
                 left: 0,
                 background: '#c30',
                 color: '#fff',
+                cursor: 'pointer',
                 padding: '4px 8px'
               }).slideDown('fast')
           }).bind('click', function(){
-              $(this).slideUp('fast')
+              if (suspended) {
+                  suspended = false
+                  $(this).css('background-color', '#c30').text(i)
+              }
+              else {
+                  suspended = true
+                  $(this).css('background-color', '#666').text('Live.js suspended')
+              }
           })
       }
       catch(e) {
@@ -63,10 +74,12 @@
 
     // performs a cycle per interval
     heartbeat: function () {      
-      if (document.body) {        
+      if (document.body) {
         // make sure all resources are loaded on first activation
         if (!loaded) Live.loadresources();
-        Live.checkForChanges();
+        if (!suspended) {
+            Live.checkForChanges();
+        }
       }
       setTimeout(Live.heartbeat, interval);
     },

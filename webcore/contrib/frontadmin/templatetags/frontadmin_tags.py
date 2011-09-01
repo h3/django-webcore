@@ -27,7 +27,6 @@ def frontadmin_toolbar(request, obj):
 
     # Changelist admin
     if isinstance(obj, SafeUnicode):
-        print obj
         app_label = obj.split('.')[0].lower()
         app_model = obj.split('.')[1].lower()
         t = loader.select_template([

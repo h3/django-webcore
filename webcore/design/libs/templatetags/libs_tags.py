@@ -82,8 +82,6 @@ def csslib(k):
 def jslib(k):
     out = []
     for lib in k.split(' '):
-        print lib
-        print settings.DEBUG
         try:
             if lib == 'live' and settings.DEBUG == False:
                 continue
@@ -91,5 +89,4 @@ def jslib(k):
                 out.append(JS_LIBS[lib])
         except:
             pass
-    print " ".join(out)
     return js(" ".join(out), 'static')
