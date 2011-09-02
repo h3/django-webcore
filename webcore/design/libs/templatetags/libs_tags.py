@@ -19,6 +19,8 @@ JS_LIBS = {
     'jqueryui': 'libs/jqueryui/jquery-ui.min.js',
     'live': 'libs/devutils/live.js?notify#html|css|js',
     'modernizr': 'libs/modernizr/modernizr.min.js',
+    'html5shiv': 'libs/html5shiv/html5.min.js',
+    'ggs': 'goldengridsystem/GGS.js',
 }
 
 CSS_LIBS = {

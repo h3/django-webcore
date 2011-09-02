@@ -1,0 +1,48 @@
+{% extends "html5boilerplate/base.html" %}
+{% load i18n navigation_tags libs_tags analytics %}
+
+{% block project.title %}SITE_NAME.com{% endblock %}
+
+{% block project.headstyles %}
+{% csslib "960 960_text 960_grid" %}
+{# jslib "live" #}
+{% css "css/site.css" %}
+{% endblock%}
+
+{# block project.scripts %}{% analytics "UA-xxxxxx-x" %}{% endblock #}
+
+{% block project.head %}
+{% block head.wrapper %}
+<div id="project-head" class="container_12">
+    <div class="grid_12">
+        <a id="logo" href="/" title="Retour à l'accueil"><img src="{{ MEDIA_URL }}img/logo.png" alt="" border="0" /></a>
+        <div id="project-navbar" class="clearfix light-grey border light-radius">
+            {# navigation request #}
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% endblock %}
+
+{% block project.body %}
+{% block content.wrapper %}
+<div id="project-body" class="container_12">
+    {% block app.head %}{% endblock %}
+    {% block content %}{% endblock %}
+</div> 
+{% endblock %}
+{% endblock %}
+
+{% block project.footer %}
+{% block footer.wrapper %}
+<div class="container_12">
+    {% block app.footer %}{% endblock %}
+    <div id="project-footer">
+        <div id="copyright" class="clearfix">
+            &copy; {% now "Y" %} {% trans "All rights reserved" %} SITE_NAME
+        </div>
+    </div>
+</div> 
+{% endblock %}
+{% endblock %}
+

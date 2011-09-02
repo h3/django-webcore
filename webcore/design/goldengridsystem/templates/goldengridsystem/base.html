@@ -1,0 +1,128 @@
+{% block doctype %}<!doctype html>{% endblock %}
+{% load i18n frontadmin_tags %}
+{% get_current_language as lang %}
+
+{# www.phpied.com/conditional-comments-block-downloads/ #}
+<!--[if IE]><![endif]-->
+
+<html lang="{{ lang|default:"en" }}" class="{% block html.class%}{% endblock %}" dir="{{LANGUAGE_BIDI|yesno:"rtl,ltr"}}"{% block html.extra %}{% endblock %}>
+<head>
+  {% block site.head %}
+  {# Site title #}
+  {% block site.title %}<title>{% block app.title %}{% endblock %}{% block project.title %}{% endblock %}</title>{% endblock %}
+  {# Metas #}
+  {% block site.meta %}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  {# Always force latest IE rendering engine (even in intranet) & Chrome Frame Remove this if you use the .htaccess #}
+  {% block project.meta %}
+  <meta name="description" content="{% block project.description %}{% endblock %}">
+  <meta name="keywords" content="{% block project.keywords %}{% endblock %}">
+  {% endblock %}
+  {% block app.meta %}{% endblock %}
+  {% comment %}
+  Mobile Viewport Fix
+  device-width : Occupy full width of the screen in its current orientation
+  initial-scale = 1.0 retains dimensions instead of zooming out if page height > device height
+  maximum-scale = 1.0 retains dimensions instead of zooming in if page width < device width
+  <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;">
+  {% endcomment %}
+  {% endblock %}
+  {# Favicon #}
+  {% block project.favicon %}
+  <link rel='shortcut icon' href="{{ MEDIA_URL }}img/favicon.ico" />
+  {% endblock%}
+
+  {# All JavaScript at the bottom, except for Modernizr which enables HTML5 elements & feature detects #}
+  <script src="{{ STATIC_URL }}libs/modernizr/modernizr.min.js"></script>
+  <!--[if IE]><script type="text/javascript" src="{{ STATIC_URL }}js/libs/excanvas.js"></script><![endif]-->
+
+  {% block site.headstyles %}
+  <link rel="stylesheet" href="{{ STATIC_URL }}html5boilerplate/css/style.css">
+  {% block project.headstyles %}{% endblock%}
+  {% block app.headstyles %}{% endblock%}
+  {% endblock %}
+
+  {% block site.headscripts %}
+  {% block project.headscripts %}{% endblock %}
+  {% block app.headscripts %}{% endblock %}
+  {% endblock %}
+
+  {% endblock %}
+</head>
+
+{# paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ #}
+<!--[if lt IE 7 ]><body class="ie6"><![endif]-->
+<!--[if IE 7 ]><body class="ie7"><![endif]-->
+<!--[if IE 8 ]><body class="ie8"><![endif]-->
+<!--[if IE 9 ]><body class="ie9"><![endif]-->
+<!--[if gt IE 9]> <body><![endif]-->
+<!--[if !IE]><!--><body><!--<![endif]-->
+
+  {% block site.body %}
+  {% block project.head %}{% endblock %}
+  {% block project.body %}{% endblock %}
+  {% block project.footer %}{% endblock %}
+  {% frontadmin_bar request %}
+  {% endblock %}
+  
+  {% block site.styles %}
+  {% block project.styles %}{% endblock%}
+  {% block app.styles %}{% endblock%}
+  {% endblock %}
+
+  {% block site.scripts %}
+  {# Javascript at the bottom for fast page loading #}
+  <script src="{{ STATIC_URL }}libs/jquery/jquery.min.js"></script>
+  <script>!window.jQuery && document.write('<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"><\/script>');</script>
+  <script src="{{ STATIC_URL }}plugins/jquery.cookie.js"></script>
+  <script>
+    var django = (function($){
+        var _urls = {}
+        var _conf = {}
+        return {
+            settings: {
+                'MEDIA_URL':  '{{ MEDIA_URL }}',
+                'STATIC_URL': '{{ STATIC_URL }}'
+            },
+
+            i18n: function() {
+                var strs = {};
+                var get = function(k)    { return _conf[k] }
+                var set = function(k, v) { return _conf[k] = v }
+                return arguments.length == 2 
+                    && set(arguments[0], arguments[1]) 
+                    || get(arguments[0])
+            },
+
+            urls: function() {
+                var get = function(k)    { return _urls[k] }
+                var set = function(k, v) { return _urls[k] = v }
+                return arguments.length >= 2 
+                    && set(arguments[0], arguments[1]) 
+                    || get(arguments[0])
+            }
+        }
+    })(jQuery)
+
+    {# http://www.djangoproject.com/weblog/2011/feb/08/security/ #}
+    {# http://docs.djangoproject.com/en/dev/ref/contrib/csrf/#ajax #}
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if ($.cookie('csrftoken') && (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url)))) {
+                xhr.setRequestHeader("X-CSRFToken", $.cookie('csrftoken'))
+            }
+        }
+    });
+  </script>
+  {% block project.scripts %}{% endblock%}
+  {% block app.scripts %}{% endblock%}
+  {% endblock%}
+  {% block site.frontadmin %}
+  {% if user.is_authenticated and user.is_staff %}
+  {% include "frontadmin/frontadmin.inc.html" %}
+  {% endif %}
+  {% endblock %}
+  {# block document.pngfix %}<!--[if lt IE 7 ]><script src="js/dd_belatedpng.js?v=1"></script><![endif]-->{% endblock #}
+  </body>
+</html>
