@@ -21,12 +21,49 @@
   To monitor CSS and be notified that it has loaded, include it as: live.js#css,notify
 */
 (function () {
-
   var suspended = false
 
-  var msg = function(i) {
+  var state = function(i) {
+    if (i) {
+      if (typeof($) != 'undefined' && $.cookie) {
+        $.cookie('livejs_state', i, {path: '/'})
+      }
+      else {
+          return suspended && 'suspended' || 'active'
+      }
+    }
+    else {
+      if (typeof($) != 'undefined' && $.cookie) {
+        var o = $.cookie('livejs_state', {path: '/'})
+        if (o) {
+            return o
+        }
+        else {
+            return suspended && 'suspended' || 'active'
+        }
+        return o
+      }
+      else {
+          return suspended && 'suspended' || 'active'
+      }
+    }
+  }
+
+  var suspend = function() {
+    suspended = true
+    state('suspended')  
+    $('#livejs-label').css('background-color', '#666').text('Live.js suspended')
+  }
+  
+  var activate = function() {
+    suspended = false
+    $('#livejs-label').css('background-color', '#c30').text('Live.js loaded')
+    state('active')  
+  }
+
+  var init = function(i) {
       try {
-          var d = $('<div>').appendTo('body').hide(function(){
+          var d = $('<div id="livejs-label">').appendTo('body').hide(function(){
               d.text(i)
               d.css({
                 fontSize: '10px',
@@ -38,16 +75,19 @@
                 color: '#fff',
                 cursor: 'pointer',
                 padding: '4px 8px'
-              }).slideDown('fast')
+              }).slideDown('fast', function(){
+                if (suspended) {
+                  $('#livejs-label').css('background-color', '#666').text('Live.js suspended')
+                }
+              })
           }).bind('click', function(){
               if (suspended) {
-                  suspended = false
-                  $(this).css('background-color', '#c30').text(i)
+                  activate()
               }
               else {
-                  suspended = true
-                  $(this).css('background-color', '#666').text('Live.js suspended')
+                  suspend()
               }
+              return false
           })
       }
       catch(e) {
@@ -58,6 +98,7 @@
               alert(i)
           }
       }
+      suspended && activate() || suspend()
       
   }
 
@@ -106,8 +147,9 @@
         if (src && src.match(/live\.js(\?|$)/)) {
           for (var type in active)
             active[type] = src.match("[#,|]" + type) != null
-          if (src.match("notify")) 
-            msg("Live.js is loaded.");
+          //if (src.match("notify")) {
+          //  init()
+          //}
         }
       }
       if (active.js != false) uris = [];
@@ -185,37 +227,41 @@
         else if (/\.css\?|$/.test(url))             type = 'text/css'
         else if (/\.(html|htm)(\?|$|#)/.test(url))  type = 'text/html'
       }
-      switch (type.toLowerCase()) {
-        // css files can be reloaded dynamically by replacing the link element                               
-        case "text/css":
-          var link = currentLinkElements[url],
-              html = document.body.parentNode,
-              head = link.parentNode,
-              next = link.nextSibling,
-              newLink = document.createElement("link");
+      // if another script throw an exception, we might not get the a type
+      // - Haineault 2011/09/10
+      if (type) {
+        switch (type.toLowerCase()) {
+          // css files can be reloaded dynamically by replacing the link element                               
+          case "text/css":
+            var link = currentLinkElements[url],
+                html = document.body.parentNode,
+                head = link.parentNode,
+                next = link.nextSibling,
+                newLink = document.createElement("link");
 
-          html.className = html.className.replace(/\s*livejs\-loading/gi, '') + ' livejs-loading';
-          newLink.setAttribute("type", "text/css");
-          newLink.setAttribute("rel", "stylesheet");
-          newLink.setAttribute("href", url + "?now=" + new Date() * 1);
-          next ? head.insertBefore(newLink, next) : head.appendChild(newLink);
-          currentLinkElements[url] = newLink;
-          oldLinkElements[url] = link;
+            html.className = html.className.replace(/\s*livejs\-loading/gi, '') + ' livejs-loading';
+            newLink.setAttribute("type", "text/css");
+            newLink.setAttribute("rel", "stylesheet");
+            newLink.setAttribute("href", url + "?now=" + new Date() * 1);
+            next ? head.insertBefore(newLink, next) : head.appendChild(newLink);
+            currentLinkElements[url] = newLink;
+            oldLinkElements[url] = link;
 
-          // schedule removal of the old link
-          Live.removeoldLinkElements();
-          break;
+            // schedule removal of the old link
+            Live.removeoldLinkElements();
+            break;
 
-        // check if an html resource is our current url, then reload                               
-        case "text/html":
-          if (url != document.location.href)
-            return;
+          // check if an html resource is our current url, then reload                               
+          case "text/html":
+            if (url != document.location.href)
+              return;
 
-          // local javascript changes cause a reload as well
-        case "text/javascript":
-        case "application/javascript":
-        case "application/x-javascript":
-          document.location.reload();
+            // local javascript changes cause a reload as well
+          case "text/javascript":
+          case "application/javascript":
+          case "application/x-javascript":
+            document.location.reload();
+        }
       }
     },
 
@@ -270,11 +316,21 @@
 
   // start listening
   if (document.location.protocol != "file:") {
-    if (!window.liveJsLoaded)
+    if (!window.liveJsLoaded) {
+      var s = state()
+      init() 
+      if (s && s == 'active') {
+          activate()
+      }
+      else {
+          suspend()
+      }
       Live.heartbeat();
+    }
 
     window.liveJsLoaded = true;
   }
-  else if (window.console)
+  else if (window.console) {
     console.log("Live.js doesn't support the file protocol. It needs http.");    
+  }
 })();
