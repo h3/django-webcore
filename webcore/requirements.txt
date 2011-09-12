@@ -1,25 +1,31 @@
 # Required
 # --------
-django==1.3
-PIL
+django==1.3.1
 Markdown
 simplejson
-
+PIL
+# Use pillow if you have problems with PIL (its packaging is a farce)
+# pillow 
 easy-thumbnails
 django-generic-flatblocks
 django-modeltranslation
 django-grappelli
+# -e git+git://github.com/sehmaschine/django-grappelli.git@autocomplete#egg=grappelli
 -e svn+http://grappelli-fit.googlecode.com/svn/trunk#egg=grappelli-fit
 -e git+git://github.com/django-mptt/django-mptt.git#egg=django-mptt
 -e git+git@github.com:h3/django-treenav.git#egg=django-treenav
--e git+git://github.com/h3/webcore-generic-flatblocks.git#egg=django-generic-flatblocks
+#-e git+git://github.com/h3/webcore-generic-flatblocks.git#egg=django-generic-flatblocks
 
 # Suggested
 # ---------
+# IPython
+# django-debug-toolbar
 # django-extensions
 # -e svn+http://grappelli-fit.googlecode.com/svn/trunk#egg=grappellifit
 # -e git+git://github.com/mintchaos/django_compressor.git#egg=django_compressor
-#-e git+git://github.com/caktus/django-treenav.git#egg=django-treenav
+# -e git+git://github.com/caktus/django-treenav.git#egg=django-treenav
+# -e git+git://github.com/pydanny/django-uni-form.git#egg=django-uni-form
+# -e git+git://github.com/ericflo/django-pagination.git#egg=django-pagination
 
 # Socialauth
 # ----------
