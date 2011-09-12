@@ -74,7 +74,8 @@
                 background: '#c30',
                 color: '#fff',
                 cursor: 'pointer',
-                padding: '4px 8px'
+                padding: '4px 8px',
+                zIndex: 10000
               }).slideDown('fast', function(){
                 if (suspended) {
                   $('#livejs-label').css('background-color', '#666').text('Live.js suspended')
