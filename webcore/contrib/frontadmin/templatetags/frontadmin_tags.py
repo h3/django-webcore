@@ -88,7 +88,7 @@ class CaptureasNode(template.Node):
             css_class = '%s-%s-%s' % (var._meta.app_label, var._meta.object_name.lower(), var.pk)
 
         return """
-        <div id="frontadmin-%s" class="front-admin-block">
+        <div id="frontadmin-%s" class="frontadmin-block">
             %s<div class="frontadmin-block-content">%s</div>
         </div>""" % (css_class,
                 frontadmin_toolbar(request, var),

@@ -23,18 +23,21 @@ html.frontadmin {
     display: none;
 }
 
-.frontadmin-show-toolbars .front-admin-block:hover .frontadmin-toolbar-frame,
+.frontadmin-show-toolbars .frontadmin-block:hover .frontadmin-toolbar-frame,
 .frontadmin-show-toolbars .frontadmin-toolbar-frame:hover {
     opacity: 1.0;
 }
 
 .frontadmin-show-toolbars .frontadmin-toolbar-frame,
-.frontadmin-show-toolbars .front-admin-block {
+.frontadmin-show-toolbars .frontadmin-block {
     display: block;
 }
 
-.frontadmin-show-toolbars .front-admin-block:hover {
-    background-color: #def!important;
+.frontadmin-show-toolbars .frontadmin-block *:hover .frontadmin-block-content,
+.frontadmin-show-toolbars .frontadmin-block:hover .frontadmin-block-content > * {
+    /*background-color: #def!important;*/
+    background-color:rgba(1, 174, 240, 0.1)!important;
+
 }
 
 .frontadmin-show-toolbars .frontadmin-block-content {
