@@ -1,5 +1,5 @@
 {% if request.LANGUAGE_CODE %}{% load i18n %}{% endif %}
-{% if is_paginated %}{% spaceless %}{% firstof page_obj.has_previous has_previous %}<ol class="clearfix">
+{% if is_paginated %}{% spaceless %}<ol class="clearfix">
     {# Previous #}
     {% if page_obj.has_previous or has_previous %}
     <li class="pagination-prev"><a href="../{% firstof previous page_obj.previous_page_number %}/{% if request.META.QUERY_STRING %}?{{ request.META.QUERY_STRING }}{% endif %}" title="{% trans "Previous page" %}">&laquo; {% trans "Prev" %}</a></li>
