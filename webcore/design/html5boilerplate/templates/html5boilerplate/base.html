@@ -63,7 +63,7 @@
   {% block project.head %}{% endblock %}
   {% block project.body %}{% endblock %}
   {% block project.footer %}{% endblock %}
-  {% frontadmin_bar request %}
+  {% block project.frontadminbar %}{% frontadmin_bar request %}{% endblock %}
   {% endblock %}
   
   {% block site.styles %}
