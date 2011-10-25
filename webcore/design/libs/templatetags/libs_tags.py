@@ -10,20 +10,21 @@ from django.conf import settings
 register = template.Library()
 
 
-JS_LIBS = {
+JS_LIBS = getattr(settings, 'WEBCORE_JS_LIBS', {
     'csspie': 'libs/PIE/PIE.js',
     'colorbox': 'libs/colorbox/jquery.colorbox.min.js',
     'colorbox_src': 'libs/colorbox/jquery.colorbox.js',
     'jquery': 'libs/static/libs/jquery/jquery.min.js',
-    'jquerymobile': 'libs/jquerymobile/jquery.mobile-1.0.min.css',
+    'jquerymobile': 'libs/jquerymobile/jquery.mobile.min.js',
+    'jquerymobile_src': 'libs/jquerymobile/jquery.mobile.js',
     'jqueryui': 'libs/jqueryui/jquery-ui.min.js',
     'live': 'libs/devutils/live.js?notify#html|css|js',
     'modernizr': 'libs/modernizr/modernizr.min.js',
     'html5shiv': 'libs/html5shiv/html5.min.js',
     'ggs': 'goldengridsystem/GGS.js',
-}
+})
 
-CSS_LIBS = {
+CSS_LIBS = getattr(settings, 'WEBCORE_CSS_LIBS', {
     # 960 grid
     '960_12_col': 'libs/960/css/960_12_col.css',
     '960_12_col_rtl': 'libs/960/css/960_12_col_rtl.css',
@@ -50,7 +51,10 @@ CSS_LIBS = {
     'ui_lightness': 'libs/jqueryui/ui-lightness/jquery-ui-1.8.14.custom.css',
     'ui_darkness': 'libs/jqueryui/ui-darkness/jquery-ui-1.8.14.custom.css',
     
-}
+    # jquery mobile
+    'jquerymobile': 'libs/jquerymobile/jquery.mobile.min.css',
+    'jquerymobile_src': 'libs/jquerymobile/jquery.mobile.css',
+})
 
 def tagfactory(paths, base, template):
     out = []
