@@ -4,27 +4,28 @@
 	<head> 
     <title>{% block project.title %}SITE_NAME.com{% endblock %}</title> 
     <meta name="viewport" content="width=device-width, initial-scale={% block viewport.initial_scale %}1{% endblock %}"> 
-    {% block project.headstyles %}
-    {% jslib "jquery" %}{% jslib "jquerymobile" %}{% endblock %}
     {% block project.headstyles %}{% csslib "jquerymobile" %}{% endblock %}
+    {% block project.headscripts %}{% jslib "jquery" %}
+    {% jslib "jquerymobile" %}{% endblock %}
 </head> 
 <body> 
-    <div data-role="page">
+    <div data-role="page" data-theme="{{ jquerymobile_theme|default:"a" }}">
         {% block project.head %}
-        <div data-role="header">
-            {% block app.title%}
+        <div data-role="header" class="ui-bar" {% block head.attrs %}{% endblock %}>
+            {% block app.title %}
             <h1>Welcome</h1>
             {% endblock %}
         </div>
         {% endblock %}
         {% block project.body %}
-        <div data-role="content">	
+        <div data-role="content" data-theme="{{ jquerymobile_theme|default:"a" }}">	
             {% block app.head %}{% endblock %}
             {% block content %}{% endblock %}
         </div>
         {% endblock %}
         {% block project.footer %}
-        <div data-role="footer">
+        <div data-role="footer" class="ui-bar" data-theme="{{ jquerymobile_theme|default:"a" }}">
+            {% block app.footer %}{% endblock %}
         </div>
         {% endblock %}
     </div>

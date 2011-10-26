@@ -14,7 +14,7 @@ JS_LIBS = getattr(settings, 'WEBCORE_JS_LIBS', {
     'csspie': 'libs/PIE/PIE.js',
     'colorbox': 'libs/colorbox/jquery.colorbox.min.js',
     'colorbox_src': 'libs/colorbox/jquery.colorbox.js',
-    'jquery': 'libs/static/libs/jquery/jquery.min.js',
+    'jquery': 'libs/jquery/jquery.min.js',
     'jquerymobile': 'libs/jquerymobile/jquery.mobile.min.js',
     'jquerymobile_src': 'libs/jquerymobile/jquery.mobile.js',
     'jqueryui': 'libs/jqueryui/jquery-ui.min.js',
