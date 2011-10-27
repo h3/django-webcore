@@ -2,16 +2,19 @@
 <!DOCTYPE html> 
 <html> 
 	<head> 
+    <meta charset="utf-8">
     <title>{% block project.title %}SITE_NAME.com{% endblock %}</title> 
     <meta name="viewport" content="width=device-width, initial-scale={% block viewport.initial_scale %}1{% endblock %}"> 
     {% block project.headstyles %}{% csslib "jquerymobile" %}{% endblock %}
+    {% block app.headstyles %}{% endblock %}
     {% block project.headscripts %}{% jslib "jquery" %}
     {% jslib "jquerymobile" %}{% endblock %}
+    {% block app.headscripts %}{% endblock %}
 </head> 
 <body> 
     <div data-role="page" data-theme="{{ jquerymobile_theme|default:"a" }}">
         {% block project.head %}
-        <div data-role="header" class="ui-bar" {% block head.attrs %}{% endblock %}>
+        <div data-role="header" {% block head.attrs %}{% endblock %}>
             {% block app.title %}
             <h1>Welcome</h1>
             {% endblock %}
@@ -29,5 +32,7 @@
         </div>
         {% endblock %}
     </div>
+    {% block app.styles %}{% endblock %}
+    {% block app.scripts %}{% endblock %}
 </body>
 </html>
