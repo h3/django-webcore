@@ -8,7 +8,7 @@ setup(
     description='Everything needed to build modern websites with django',
     author='Maxime Haineault (Motion Média)',
     author_email='max@motion-m.ca',
-    url='http://code.google.com/p/django-webcore/',
+    url='https://github.com/h3/django-webcore',
     download_url='',
     packages=find_packages(),
     include_package_data=True,
