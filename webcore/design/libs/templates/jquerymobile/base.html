@@ -27,7 +27,7 @@
         </div>
         {% endblock %}
         {% block project.footer %}
-        <div data-role="footer" class="ui-bar" data-theme="{{ jquerymobile_theme|default:"a" }}">
+        <div data-role="footer" class="ui-bar" data-theme="{{ jquerymobile_theme|default:"a" }}" {% block footer.attrs %}{% endblock %}>
             {% block app.footer %}{% endblock %}
         </div>
         {% endblock %}
