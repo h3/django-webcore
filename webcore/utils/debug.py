@@ -1,10 +1,16 @@
 import warnings
-
+from IPython import embed
 try:
-    from IPython.Shell import IPShellEmbed
-    def brake():
-        return IPShellEmbed()
+    import IPython
+    try: # Legacy
+        from IPython import Shell
+        def brake():
+            return Shell.IPShellEmbed()
+    except: # New way
+        def brake():
+            return IPython.embed
+
 except:
     def brake():
         warnings.warn("IPython shell doesn't seem to be installed.", ImportWarning)
-        return lambda x: x
+        return lambda: ''
