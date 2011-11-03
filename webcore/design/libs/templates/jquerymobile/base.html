@@ -12,7 +12,7 @@
     {% block app.headscripts %}{% endblock %}
 </head> 
 <body> 
-    <div data-role="page" data-theme="{{ jquerymobile_theme|default:"a" }}">
+    <div id="main-page" data-role="page" data-theme="{{ jquerymobile_theme|default:"a" }}">
         {% block project.head %}
         <div data-role="header" {% block head.attrs %}{% endblock %}>
             {% block app.title %}
@@ -32,6 +32,7 @@
         </div>
         {% endblock %}
     </div>
+    {% block app.extra_pages %}{% endblock %}
     {% block app.styles %}{% endblock %}
     {% block app.scripts %}{% endblock %}
 </body>
