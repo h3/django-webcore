@@ -53,6 +53,7 @@ CSS_LIBS = getattr(settings, 'WEBCORE_CSS_LIBS', {
     
     # jquery mobile
     'jquerymobile': 'libs/jquerymobile/jquery.mobile.min.css',
+    'jquerymobile_struct': 'libs/jquerymobile/jquery.mobile.structure.min.css',
     'jquerymobile_src': 'libs/jquerymobile/jquery.mobile.css',
 })
 
