@@ -1,5 +1,5 @@
 import warnings
-from IPython import embed
+
 try:
     import IPython
     try: # Legacy
