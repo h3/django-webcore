@@ -21,6 +21,7 @@ JS_LIBS = getattr(settings, 'WEBCORE_JS_LIBS', {
     'live': 'libs/devutils/live.js?notify#html|css|js',
     'modernizr': 'libs/modernizr/modernizr.min.js',
     'html5shiv': 'libs/html5shiv/html5.min.js',
+    'excanvas': 'excanvas/excanvas.js',
     'ggs': 'goldengridsystem/GGS.js',
 })
 
