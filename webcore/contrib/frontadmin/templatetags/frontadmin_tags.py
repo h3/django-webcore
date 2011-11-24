@@ -82,6 +82,9 @@ class CaptureasNode(template.Node):
        #context['toolbar'] = frontadmin_toolbar(request, var)
         output = self.nodelist.render(context)
 
+        if not request.user or not request.user.is_authenticated():
+            return output
+
         if isinstance(var, SafeUnicode):
             css_class = var.replace('.', '-').lower()
         else:
