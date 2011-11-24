@@ -8,7 +8,3 @@ recursive-include webcore/design/html5boilerplate/static *
 recursive-include webcore/contrib/frontadmin/templates *
 recursive-include webcore/contrib/frontadmin/static *
 recursive-include webcore/contrib/google_analytics/templates *
-recursive-include webcore/contrib/google_analytics/static *
-recursive-include webcore/contrib/django_generic_flatblocks/templates *
-recursive-include webcore/contrib/django_generic_flatblocks/static *
-recursive-include webcore/contrib/django_generic_flatblocks/contrib/gblock/templates *
