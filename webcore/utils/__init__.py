@@ -7,9 +7,13 @@ def get_real_ip(request):
         return request.META['REMOTE_ADDR']
 
 def get_captcha_args(request, challenge_field='recaptcha_challenge_field', response_field='recaptcha_response_field'):
-    return [
-        request.POST[challenge_field],
-        request.POST[response_field],
-        settings.RECAPTCHA_PRIVATE_KEY,
-        get_real_ip(request),
+    if challenge_field in request.POST:
+        return [
+            request.POST[challenge_field],
+            request.POST[response_field],
+            settings.RECAPTCHA_PRIVATE_KEY,
+            get_real_ip(request),
         ]
+    else:
+        print "Error: captcha field not found."
+        return []
