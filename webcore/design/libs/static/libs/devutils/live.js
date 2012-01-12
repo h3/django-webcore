@@ -21,7 +21,7 @@
   To monitor CSS and be notified that it has loaded, include it as: live.js#css,notify
 */
 (function () {
-  var suspended = false
+  var suspended = true;
 
   var state = function(i) {
     if (i) {
@@ -71,7 +71,7 @@
                 position: 'fixed',
                 bottom: 0,
                 left: 0,
-                background: '#c30',
+                background: '#666',
                 color: '#fff',
                 cursor: 'pointer',
                 padding: '4px 8px',
@@ -79,6 +79,9 @@
               }).slideDown('fast', function(){
                 if (suspended) {
                   $('#livejs-label').css('background-color', '#666').text('Live.js suspended')
+                }
+                else {
+                  $('#livejs-label').css('background-color', '#c30').text('Live.js loaded')
                 }
               })
           }).bind('click', function(){
@@ -99,8 +102,6 @@
               alert(i)
           }
       }
-      suspended && activate() || suspend()
-      
   }
 
   var headers = { "Etag": 1, "Last-Modified": 1, "Content-Length": 1, "Content-Type": 1 },
@@ -314,7 +315,7 @@
       xhr.send();
     }
   };
-
+  
   // start listening
   if (document.location.protocol != "file:") {
     if (!window.liveJsLoaded) {
