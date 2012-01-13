@@ -64,10 +64,29 @@ html.frontadmin {
 
 /* Editing popups */
 #frontadmin-iframe-window {
+    background: #222 url(../img/loading.gif) no-repeat center center;
     border: 1px solid #555;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -o-border-radius: 3px;
+    moz-border-radius: 3px;
     -moz-box-shadow: 0 0 100px #fff;
     -webkit-box-shadow: 0 0 100px #fff;
     -o-box-shadow: 0 0 100px #fff;
     box-shadow: 0 0 100px #fff;
 }
 
+#frontadmin-iframe-window iframe {
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -o-border-radius: 3px;
+    moz-border-radius: 3px;
+}
+
+#frontadmin-iframe-window.saving iframe {
+    display: none;
+}
+
+#frontadmin-iframe-window.saving iframe {
+    display: none;
+}

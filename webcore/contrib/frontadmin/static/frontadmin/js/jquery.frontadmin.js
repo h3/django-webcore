@@ -1,16 +1,16 @@
 $(function(){
 
     $.frontadmin = (function(){
-        var $self = this
+        var $self = this;
         
         $self.states = {
             initialized: false,
             toolbars_visibles: false,
             active_frame: false
-        }
+        };
 
-        $self.bar = $('#frontadmin-bar-frame')
-        $self.toolbars = $('.frontadmin-toolbar-frame')
+        $self.bar = $('#frontadmin-bar-frame');
+        $self.toolbars = $('.frontadmin-toolbar-frame');
 
         $self.buttons = {
             logout: '#frontadmin-btn-logout',
@@ -20,7 +20,7 @@ $(function(){
             changeObject: '#frontadmin-change-object',
             objectHistory: '#frontadmin-history-object',
             changelist: '#frontadmin-changelist',
-        }
+        };
 
         $self.clearSelection = function() {
             if(document.selection && document.selection.empty) {
@@ -32,28 +32,28 @@ $(function(){
         }
 
         $self.cookie = function(k, v) {
-            if (v) { return $.cookie(k, v, {path: '/'}) }
-            else   { return $.cookie(k,    {path: '/'}) }
+            if (v) { return $.cookie(k, v, {path: '/'}); }
+            else   { return $.cookie(k,    {path: '/'}); }
         }
 
         // frontadmin toolbar initial state
         if ($self.cookie('frontadmin_toolbars_visibles') == null) { 
             // Cookie does not exist, set it and show the toolbar by default
             $self.cookie('frontadmin_toolbars_visibles', true)
-            $self.states.toolbars_visibles = true
+            $self.states.toolbars_visibles = true;
         }
         else if ($self.cookie('frontadmin_toolbars_visibles') == 'true') {
-            $self.states.toolbars_visibles = true
+            $self.states.toolbars_visibles = true;
         }
         else {
-            $self.states.toolbars_visibles = false
+            $self.states.toolbars_visibles = false;
         }
 
         $self.closeActiveFrame = function() {
             if (!$self.states.active_frame.hasClass('modified') || confirm('Close and discard modifications ?')) {
                 $self.states.active_frame.parent().fadeOut(function(){
-                    $self.states.active_frame.parent().remove()
-                    $self.states.active_frame = false
+                    $self.states.active_frame.parent().remove();
+                    $self.states.active_frame = false;
                 })
             }
         }
@@ -64,20 +64,20 @@ $(function(){
             var $this  = this;
             var cancel = $('<li class="cancel-button-container"><a class="cancel-link" href="#">Cancel</a></li>')
             cancel.find('a').bind('click.adminToolbar', function() {
-                $self.closeActiveFrame()
-                return false
+                $self.closeActiveFrame();
+                return false;
             })
             if (d.find('#changelist').get(0)) {
                var changelist = true;
                if (!d.find('#submit').find('.submit-row').get(0)) {
-                   d.find('#submit').append('<ul class="submit-row" />')
+                   d.find('#submit').append('<ul class="submit-row" />');
                }
             }
 
             d.bind('keydown', function(e) {
                 if (e.keyCode == 27) {
-                    $self.closeActiveFrame()
-                    return false
+                    $self.closeActiveFrame();
+                    return false;
                 }
             })
 
@@ -92,15 +92,18 @@ $(function(){
                  .find('.submit-row').append(cancel).end()
                  .find('input[name="_continue"]').bind('click', function() {
                      $self.states.active_frame.addClass('saving continue')
+                     $self.states.active_frame.parent().addClass('saving continue')
+                     
                  }).end()
                  .find('input[name="_save"]').bind('click', function() {
                      $self.states.active_frame.addClass('saving')
+                     $self.states.active_frame.parent().addClass('saving')
                  }).end()
                  .find('.delete-link').bind('click', function() {
                      $self.states.active_frame.addClass('deleting')
                  }).end()
                  .find('input[name="_addanother"]').parent().hide().end().end()
-             .end() 
+             .end();
         }
 
         $self.events = {
@@ -108,319 +111,322 @@ $(function(){
             // Readjust bar & toolbars on window resize
             onWindowResize: function(e) {
                 $self.toolbars.each(function(){
-                    $(this).width($(this).parent().width())
+                    $(this).width($(this).parent().width());
                 })
-                var w =  parseInt($(document).width() / 3)
-                if (w < 450) { w = 450 }
-                $self.bar.width(w)
+                var w =  parseInt($(document).width() / 3);
+                if (w < 450) { w = 450; }
+                $self.bar.width(w);
             },
             
             // Log the user out and hide frontadmin
             onLogout: function(e){
                 $.get($(this).attr('href'), function(){
                     $self.toolbars.each(function(){
-                        var wrapper = $(this).parents('.front-admin-block')
+                        var wrapper = $(this).parents('.front-admin-block');
                         wrapper.find('.frontadmin-toolbar-frame').slideUp('fast', function(){
-                                $(this).remove()
-                            }).end().find('*').unwrap()
-                        wrapper.remove()
+                                $(this).remove();
+                            }).end().find('*').unwrap();
+                        wrapper.remove();
                     })
                     $self.bar.slideDown('fast', function(){
-                        $(this).remove()
+                        $(this).remove();
                     })
                 })
-                return false
+                return false;
             },                
 
             // toggle frontadmin ui
             onToggleToolbar: function(e){
-                $('html').toggleClass('frontadmin-show-toolbars')
-                var show = $('html').hasClass('frontadmin-show-toolbars')
-                $(this)[show && 'addClass' || 'removeClass']('active')
-                $self.cookie('frontadmin_toolbars_visibles', show && 'true' || 'false')
-                $self.states.toolbars_visibles = show
-                $self.cookie('frontadmin_toolbars_visibles', show && true || false)
+                $('html').toggleClass('frontadmin-show-toolbars');
+                var show = $('html').hasClass('frontadmin-show-toolbars');
+                $(this)[show && 'addClass' || 'removeClass']('active');
+                $self.cookie('frontadmin_toolbars_visibles', show && 'true' || 'false');
+                $self.states.toolbars_visibles = show;
+                $self.cookie('frontadmin_toolbars_visibles', show && true || false);
                 return false;
             },
 
             onToggleBar: function(e){
-                var bar = $('#frontadmin-bar-frame')
+                var bar = $('#frontadmin-bar-frame');
                 if (bar.hasClass('minimized')) {
-                    var w =  parseInt($(document).width() / 3)
-                    if (w < 450) { w = 450 }
-                    bar.removeClass('minimized').animate({width: w}).fadeTo('fast', 1.0)
+                    var w =  parseInt($(document).width() / 3);
+                    if (w < 450) { w = 450; }
+                    bar.removeClass('minimized').animate({width: w}).fadeTo('fast', 1.0);
                 }
                 else {
-                    bar.addClass('minimized').animate({width: 36}).fadeTo('fast', 0.5)
+                    bar.addClass('minimized').animate({width: 36}).fadeTo('fast', 0.5);
                 }
                 return false;
             },
 
             onObjectChange: function(){
-                var url = $(this).attr('href')
-                var el = $(this)
-                var bd = $(this).parents('body')
-                var block = $("#frontadmin-"+ bd.find('#app_label').val() 
-                              +"-"+ bd.find('#object_name').val() 
-                              +"-"+ bd.find('#object_id').val())
-                var content = block.find('.frontadmin-block-content')
+                var url = $(this).attr('href');
+                var el = $(this);
+                var bd = $(this).parents('body');
+                var block = $("#frontadmin-"+ bd.find('#app_label').val()
+                              +"-"+ bd.find('#object_name').val()
+                              +"-"+ bd.find('#object_id').val());
+                var content = block.find('.frontadmin-block-content');
 
                 // Open iframe window
                 $self.states.active_frame = $.iframeWindow(url, function() {
-                    var frame  = $(this)
-                    var doc    = frame.contents()
-                    var msg    = doc.find('#container > .messagelist')
-                    var url    = document.location.href + ' #'+ block.attr('id')
-                    var errors = doc.find('.errornote').get(0)
+                    var frame  = $(this);
+                    var doc    = frame.contents();
+                    var msg    = doc.find('#container > .messagelist');
+                    var url    = document.location.href + ' #'+ block.attr('id');
+                    var errors = doc.find('.errornote').get(0);
 
-                    $self.cleanDocument(doc)
+                    $self.cleanDocument(doc);
 
                     // Save button has been clicked
                     if ($(this).hasClass('saving')) {
                         if (!errors) {
-                            if (!frame.hasClass('continue')) {
-                                $self.closeActiveFrame()
-                            }
                             content.load(url, function() {
-                                content.find('.frontadmin-toolbar-frame').remove()
-                                content = $(this).children().unwrap()
+                                content.find('.frontadmin-toolbar-frame').remove();
+                                content = $(this).children().unwrap();
                                 //$self.bindToolbarEvents(content.parent().find('iframe'))
                                 //$.frontendMessage(msg.find('li:first').text())
-                            })
+                            });
+
+                            if (!frame.hasClass('continue')) {
+                                $self.closeActiveFrame();
+                            } else {
+                                frame.parent().removeClass('saving');
+                                frame.removeClass('saving').removeClass('continue');
+                            }
                         }
-                        frame.removeClass('saving').removeClass('continue')
                     }
                     else if ($(this).hasClass('deleting')) {
                         // Delete button has been clicked
                         // User can now either cancel or confirm
-                        var cancel = doc.find('.left.cancel-button-container').removeClass('left').remove()
-                        doc.find('.cancel-button-container').replaceWith(cancel)
+                        var cancel = doc.find('.left.cancel-button-container').removeClass('left').remove();
+                        doc.find('.cancel-button-container').replaceWith(cancel);
                         doc.find('.cancel-link').unbind('click')
                             .bind('click.adminToolbar', function(){
-                                frame.removeClass('deleting').removeClass('deleted')
-                            }).end().remove()
+                                frame.removeClass('deleting').removeClass('deleted');
+                            }).end().remove();
                         // Confirm delete
                         doc.find('.footer input[type=submit]').bind('click.adminToolbar', function() {
-                            frame.removeClass('deleting').addClass('deleted')
+                            frame.removeClass('deleting').addClass('deleted');
                         })
 
                     }
                     else if (frame.hasClass('deleted')) {
-                        frame.removeClass('deleted')
-                        var errors = doc.find('.errornote').get(0)
+                        frame.removeClass('deleted');
+                        var errors = doc.find('.errornote').get(0);
                         if (!errors) {
-                            $self.closeActiveFrame()
-                            $.frontendMessage(msg.find('li:first').text())
+                            $self.closeActiveFrame();
+                            $.frontendMessage(msg.find('li:first').text());
                             block.slideUp('slow', function() {
-                                $(this).remove()
+                                $(this).remove();
                             })
                         }
                     }
                     else {
-                        msg.find('li').css('border', 0)
+                        msg.find('li').css('border', 0);
                     }
                 })
-                return false
+                return false;
             },
 
             onChangelist: function(){
-                var url = $(this).attr('href')
-                var el = $(this)
-                var bd = $(this).parents('body')
+                var url = $(this).attr('href');
+                var el = $(this);
+                var bd = $(this).parents('body');
                 var block = $("#frontadmin-"+ bd.find('#app_label').val() 
-                              +"-"+ bd.find('#app_model').val())
-                var content = block.find('.frontadmin-block-content')
+                              +"-"+ bd.find('#app_model').val());
+                var content = block.find('.frontadmin-block-content');
 
                 // Open iframe window
                 $self.states.active_frame = $.iframeWindow(url, function() {
-                    var frame  = $(this)
-                    var doc    = frame.contents()
-                    var msg    = doc.find('#container > .messagelist')
-                    var url    = document.location.href + ' #'+ block.attr('id')
-                    var errors = doc.find('.errornote').get(0)
+                    var frame  = $(this);
+                    var doc    = frame.contents();
+                    var msg    = doc.find('#container > .messagelist');
+                    var url    = document.location.href + ' #'+ block.attr('id');
+                    var errors = doc.find('.errornote').get(0);
 
                     // Save button has been clicked
                     if (frame.hasClass('saving')) {
                         if (!errors) {
                             if (!frame.hasClass('continue')) {
-                                $self.closeActiveFrame()
+                                $self.closeActiveFrame();
                             }
                             content.load(url, function() {
                                 content.find('.frontadmin-toolbar-frame').remove()
-                                content = frame.children().unwrap()
+                                content = frame.children().unwrap();
                                 //$self.bindToolbarEvents(content.parent().find('iframe'))
                                 //$.frontendMessage(msg.find('li:first').text())
-                            })
+                            });
                         }
-                        frame.removeClass('saving').removeClass('continue')
+                        frame.removeClass('saving').removeClass('continue');
                     }
                     else if ($(this).hasClass('deleting')) {
                         // Delete button has been clicked
                         // User can now either cancel or confirm
-                        var cancel = doc.find('.left.cancel-button-container').removeClass('left').remove()
-                        doc.find('.cancel-button-container').replaceWith(cancel)
+                        var cancel = doc.find('.left.cancel-button-container').removeClass('left').remove();
+                        doc.find('.cancel-button-container').replaceWith(cancel);
                         doc.find('.cancel-link').unbind('click')
                             .bind('click.adminToolbar', function(){
-                                frame.removeClass('deleting').removeClass('deleted')
-                            }).end().remove()
+                                frame.removeClass('deleting').removeClass('deleted');
+                            }).end().remove();
                         // Confirm delete
                         doc.find('.footer input[type=submit]').bind('click.adminToolbar', function() {
-                            frame.removeClass('deleting').addClass('deleted')
+                            frame.removeClass('deleting').addClass('deleted');
                         })
 
                     }
                     else if (frame.hasClass('deleted')) {
-                        frame.removeClass('deleted')
-                        var errors = doc.find('.errornote').get(0)
+                        frame.removeClass('deleted');
+                        var errors = doc.find('.errornote').get(0);
                         if (!errors) {
-                            $self.closeActiveFrame()
-                            $.frontendMessage(msg.find('li:first').text())
+                            $self.closeActiveFrame();
+                            $.frontendMessage(msg.find('li:first').text());
                             block.slideUp('slow', function() {
-                                $(this).remove()
+                                $(this).remove();
                             })
                         }
                     }
                     else {
-                        msg.find('li').css('border', 0)
+                        msg.find('li').css('border', 0);
                     }
                 })
                 $self.states.active_frame.bind('load', function(){
-                    $self.cleanDocument($self.states.active_frame.contents())
+                    $self.cleanDocument($self.states.active_frame.contents());
                 })
-                return false
+                return false;
             },
 
             // Triggered when a toolbar delete button is clicked
             onObjectDelete: function() {
-                var url = $(this).attr('href')
-                var el = $(this)
-                var bd = $(this).parents('body')
-                var block = $("#frontadmin-"+ bd.find('#app_label').val() +"-"+ bd.find('#object_name').val() +"-"+ bd.find('#object_id').val())
+                var url = $(this).attr('href');
+                var el = $(this);
+                var bd = $(this).parents('body');
+                var block = $("#frontadmin-"+ bd.find('#app_label').val() +"-"+ bd.find('#object_name').val() +"-"+ bd.find('#object_id').val());
 
                 $self.states.active_frame = $.iframeWindow(url, function() {
-                    var frame  = $(this)
-                    var doc    = frame.contents()
-                    var msg    = doc.find('#container > .messagelist')
-                    var url    = document.location.href + ' #'+ block.attr('id')
-                    var errors = doc.find('.errornote').get(0)
+                    var frame  = $(this);
+                    var doc    = frame.contents();
+                    var msg    = doc.find('#container > .messagelist');
+                    var url    = document.location.href + ' #'+ block.attr('id');
+                    var errors = doc.find('.errornote').get(0);
 
-                    $self.cleanDocument(doc)
+                    $self.cleanDocument(doc);
 
                     if (frame.hasClass('deleted')) {
-                        frame.removeClass('deleted')
-                        var errors = doc.find('.errornote').get(0)
+                        frame.removeClass('deleted');
+                        var errors = doc.find('.errornote').get(0);
                         if (!errors) {
-                            $self.closeActiveFrame()
+                            $self.closeActiveFrame();
                             //$.frontendMessage(msg.find('li:first').text())
                             block.slideUp('slow', function() {
-                                $(this).remove()
+                                $(this).remove();
                             })
                         }
                     }
                     else {
-                        var cancel = doc.find('.left.cancel-button-container').removeClass('left').remove()
-                        doc.find('.cancel-button-container').replaceWith(cancel)
+                        var cancel = doc.find('.left.cancel-button-container').removeClass('left').remove();
+                        doc.find('.cancel-button-container').replaceWith(cancel);
                         doc.find('.cancel-link').unbind('click')
                             .bind('click.adminToolbar', function(){
-                                frame.removeClass('deleting').removeClass('deleted')
-                                $self.closeActiveFrame()
-                            }).end().remove()
+                                frame.removeClass('deleting').removeClass('deleted');
+                                $self.closeActiveFrame();
+                            }).end().remove();
                         // Confirm delete
                         doc.find('.footer input[type=submit]').bind('click.adminToolbar', function() {
-                            frame.removeClass('deleting').addClass('deleted')
+                            frame.removeClass('deleting').addClass('deleted');
                         })
                     }
                 })
-                return false
+                return false;
             },
 
             // Triggered when a toolbar historybutton is clicked
             onObjectHistory: function() {
-                var url = $(this).attr('href')
-                var el = $(this)
-                var bd = $(this).parents('body')
+                var url = $(this).attr('href');
+                var el = $(this);
+                var bd = $(this).parents('body');
                 var ft = $([
                     '<div class="module footer">',
                         '<ul class="submit-row">',
                             '<li class="cancel-button-container"><a href="#" class="cancel-link">Close</a></li>',
                         '</ul><br clear="all">',
-                    '</div>'].join(''))
+                    '</div>'].join(''));
 
                 $self.states.active_frame = $.iframeWindow(url, function() {
-                    var doc = $(this).contents()
-                    $self.cleanDocument(doc)
-                    doc.find('body').append(ft)
+                    var doc = $(this).contents();
+                    $self.cleanDocument(doc);
+                    doc.find('body').append(ft);
                     doc.find('.cancel-button-container').bind('click', function(){
-                        $self.closeActiveFrame()
+                        $self.closeActiveFrame();
                     })
                 })
-                return false
+                return false;
             }
         }
 
         $self.bindBarEvents = function() {
-            var doc = $self.bar.contents()
+            var doc = $self.bar.contents();
             if ($('html').hasClass('frontadmin-show-toolbars')) {
-                doc.find($self.buttons.toggle).addClass('active')
+                doc.find($self.buttons.toggle).addClass('active');
             }
             doc.find($self.buttons.logout).bind('click.frontadmin', $self.events.onLogout).end()
                .find($self.buttons.toggle).bind('click.frontadmin', $self.events.onToggleToolbar).end()
-               .find($self.buttons.toggleBar).bind('click.frontadmin', $self.events.onToggleBar).end()
+               .find($self.buttons.toggleBar).bind('click.frontadmin', $self.events.onToggleBar).end();
         }
         
         $self.bindToolbarEvents = function(toolbar) {
             function bind(tb){
-                var doc = $(tb).contents()
+                var doc = $(tb).contents();
                 doc.find($self.buttons.deleteObject).bind('click.frontadmin',  $self.events.onObjectDelete).end()
                    .find($self.buttons.changeObject).bind('click.frontadmin',  $self.events.onObjectChange).end()
                    .find($self.buttons.objectHistory).bind('click.frontadmin', $self.events.onObjectHistory).end()
-                   .find($self.buttons.changelist).bind('click.frontadmin',    $self.events.onChangelist).end()
+                   .find($self.buttons.changelist).bind('click.frontadmin',    $self.events.onChangelist).end();
             }
             if (toolbar) {
-                bind(toolbar)
+                bind(toolbar);
             }
             else {
                 $.each($self.toolbars, function(){
-                    bind(this)
+                    bind(this);
                 })
             }
         }
 
         return {
             init: function() {
-                $('html').addClass('frontadmin')
-                $self.events.onWindowResize()
-                $(window).resize($self.events.onWindowResize)
+                $('html').addClass('frontadmin');
+                $self.events.onWindowResize();
+                $(window).resize($self.events.onWindowResize);
 
                 // Little trick to load iframe content locally
                 $self.bar.add($self.toolbars).each(function(){
-                    $(this).contents().find('body').html($(this).text())
+                    $(this).contents().find('body').html($(this).text());
                 })
 
-                $('html')[($self.states.toolbars_visibles == true && 'addClass' || 'removeClass')]('frontadmin-show-toolbars')
+                $('html')[($self.states.toolbars_visibles == true && 'addClass' || 'removeClass')]('frontadmin-show-toolbars');
 
-                $self.bindBarEvents()
-                $self.bindToolbarEvents()
+                $self.bindBarEvents();
+                $self.bindToolbarEvents();
                 
                 $('.frontadmin-block-content').bind('dblclick', function(){
-                    var doc = $(this).parent().find('.frontadmin-toolbar-frame').contents()
-                    $self.clearSelection()
-                    $self.events.onObjectChange.apply(doc.find('#frontadmin-change-object').get(0))
+                    var doc = $(this).parent().find('.frontadmin-toolbar-frame').contents();
+                    $self.clearSelection();
+                    $self.events.onObjectChange.apply(doc.find('#frontadmin-change-object').get(0));
                     return false;
                 })
 
-                $self.states.initialized = true
+                $self.states.initialized = true;
             }
         }
     })()
 
-    $.frontadmin.init()
+    $.frontadmin.init();
 
     $.iframeWindow = function(src, callback, option) {
-        var options  = options || {}
-        var callback = callback || function(){}
-        var iframe   = $('<iframe frameborder="0" />').attr('src', src).load(callback)
-        var wrapper  = $('<div id="frontadmin-iframe-window">').append(iframe)
+        var options  = options || {};
+        var callback = callback || function(){};
+        var iframe   = $('<iframe frameborder="0" />').attr('src', src).load(callback);
+        var wrapper  = $('<div id="frontadmin-iframe-window">').append(iframe);
 
         wrapper.css({
             position: 'fixed',
@@ -429,15 +435,17 @@ $(function(){
             right: 50,
             bottom: 50,
            zIndex: 99999
-        }).appendTo('body')
+        }).appendTo('body');
           
         var resize = function() {
             iframe.css({
                 height: wrapper.height(),           
                 width:  wrapper.width(),
-            })
-        }
-        $(window).resize(resize).trigger('resize')
-        return iframe
+            });
+        };
+
+        $(window).resize(resize).trigger('resize');
+
+        return iframe;
     }
-})
+});
