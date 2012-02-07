@@ -15,6 +15,9 @@
     <a id="frontadmin-btn-admin" href="{% url admin:index %}" title="{% trans "Edit in admin" %}" class="button" target="_parent">{% trans "Admin" %}</a>
     {#<a id="frontadmin-btn-metas" href="#" title="{% trans "Edit page metas" %}" class="button">{% trans "Metas" %}</a>#}
     <a id="frontadmin-btn-toggle" href="#" title="{% trans "Show editable blocks" %}" class="button">{% trans "Edit" %}</a>
+    {% for plugin in plugins %}
+    {{ plugin|safe }}
+    {% endfor %}
 </div>
 <style>{% include "frontadmin/bar.inc.css" %}</style>
 </iframe>

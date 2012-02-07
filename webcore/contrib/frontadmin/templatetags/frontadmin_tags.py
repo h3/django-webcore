@@ -3,22 +3,26 @@
 
 from django import template
 from django.template import RequestContext, Context
-from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.utils.safestring import SafeUnicode
+from webcore.contrib.frontadmin.conf import settings
+from webcore.contrib.frontadmin.plugins import load_plugins
 #from django.core.urlresolvers import RegexURLResolver, reverse
 #from django.utils.safestring import SafeString
 #from django.utils.translation import gettext as _
-#from django.utils.importlib import import_module
 
 register = template.Library()
 
 @register.simple_tag()
 def frontadmin_bar(request):
+    """
+    The main frontadmin bar
+    """
     t = loader.select_template([
             "frontadmin/bar.inc.html",
         ])
     return t.render(RequestContext(request, {
+        'plugins': load_plugins(request),
     }))
 
 

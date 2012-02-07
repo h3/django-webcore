@@ -1,5 +1,15 @@
 $(function(){
 
+    $.getQueryParam = function(name, url) {
+        if (!url) { url = window.location.search; }
+        else {
+            var m = url.match(/\?.*$/);
+            if (m && m.length > 0) { url = m[0]; }
+        }
+        var match = RegExp('[?&]' + name + '=([^&]*)').exec(url);
+        return match && decodeURIComponent(match[1].replace(/\+/g, ' ')) || false;
+    }
+
     $.frontadmin = (function(){
         var $self = this;
         
@@ -17,9 +27,9 @@ $(function(){
             toggle: '#frontadmin-btn-toggle',
             toggleBar: '.frontadmin-toggle-bar',
             deleteObject: '#frontadmin-delete-object',
-            changeObject: '#frontadmin-change-object',
+            changeObject: '#frontadmin-change-object, .frontadmin-change-object',
             objectHistory: '#frontadmin-history-object',
-            changelist: '#frontadmin-changelist',
+            changelist: '#frontadmin-changelist'
         };
 
         $self.clearSelection = function() {
@@ -168,6 +178,12 @@ $(function(){
                               +"-"+ bd.find('#object_id').val());
                 var content = block.find('.frontadmin-block-content');
 
+                var inject = $.getQueryParam('inject', url);
+                if (inject) {
+                    var value = $.getQueryParam('value', url);
+                    url = url.split('?')[0];
+                }
+
                 // Open iframe window
                 $self.states.active_frame = $.iframeWindow(url, function() {
                     var frame  = $(this);
@@ -177,6 +193,10 @@ $(function(){
                     var errors = doc.find('.errornote').get(0);
 
                     $self.cleanDocument(doc);
+
+                    if (inject && value) {
+                        doc.find('#'+inject).val(value);
+                    }
 
                     // Save button has been clicked
                     if ($(this).hasClass('saving')) {
@@ -371,7 +391,8 @@ $(function(){
             }
             doc.find($self.buttons.logout).bind('click.frontadmin', $self.events.onLogout).end()
                .find($self.buttons.toggle).bind('click.frontadmin', $self.events.onToggleToolbar).end()
-               .find($self.buttons.toggleBar).bind('click.frontadmin', $self.events.onToggleBar).end();
+               .find($self.buttons.toggleBar).bind('click.frontadmin', $self.events.onToggleBar).end()
+               .find($self.buttons.changeObject).bind('click.frontadmin',  $self.events.onObjectChange).end();
         }
         
         $self.bindToolbarEvents = function(toolbar) {
