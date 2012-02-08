@@ -1,8 +1,8 @@
 {% if user.is_authenticated and user.is_staff %}
 {% load i18n %}
-<iframe id="frontadmin-bar-frame">
+<iframe id="frontadmin-bar-frame" style="display:none;">
 <div class="frontadmin-bar">
-    <img src="{{ STATIC_URL }}frontadmin/img/wc-small.png" id="logo" class="frontadmin-toggle-bar">
+    <a id="frontadmin-btn-toggle" href="#toggle" title="{% trans "Hide administration toolbars" %}" class="button blue">&ndash;</a>
     <span>
         {% trans "Logged in as " %} 
         {% if user.first_name or user.last_name %}
@@ -14,7 +14,6 @@
     <a id="frontadmin-btn-logout" href="{% url admin:logout %}" title="{% trans "Disconnect" %}" class="button red">{% trans "Disconnect" %}</a>
     <a id="frontadmin-btn-admin" href="{% url admin:index %}" title="{% trans "Edit in admin" %}" class="button" target="_parent">{% trans "Admin" %}</a>
     {#<a id="frontadmin-btn-metas" href="#" title="{% trans "Edit page metas" %}" class="button">{% trans "Metas" %}</a>#}
-    <a id="frontadmin-btn-toggle" href="#" title="{% trans "Show editable blocks" %}" class="button">{% trans "Edit" %}</a>
     {% for plugin in plugins %}
     {{ plugin|safe }}
     {% endfor %}

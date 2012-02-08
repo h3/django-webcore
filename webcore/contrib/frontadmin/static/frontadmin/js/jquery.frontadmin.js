@@ -25,7 +25,6 @@ $(function(){
         $self.buttons = {
             logout: '#frontadmin-btn-logout',
             toggle: '#frontadmin-btn-toggle',
-            toggleBar: '.frontadmin-toggle-bar',
             deleteObject: '#frontadmin-delete-object',
             changeObject: '#frontadmin-change-object, .frontadmin-change-object',
             objectHistory: '#frontadmin-history-object',
@@ -39,12 +38,18 @@ $(function(){
                 var sel = window.getSelection();
                 sel.removeAllRanges();
             }
-        }
+        };
+
+        $self.getMainBarWidth = function(){
+            var w = parseInt($(document).width() / 2.5);
+            if (w < 600) { w = 600; }
+            return w
+        };
 
         $self.cookie = function(k, v) {
             if (v) { return $.cookie(k, v, {path: '/'}); }
             else   { return $.cookie(k,    {path: '/'}); }
-        }
+        };
 
         // frontadmin toolbar initial state
         if ($self.cookie('frontadmin_toolbars_visibles') == null) { 
@@ -123,9 +128,7 @@ $(function(){
                 $self.toolbars.each(function(){
                     $(this).width($(this).parent().width());
                 })
-                var w =  parseInt($(document).width() / 3);
-                if (w < 450) { w = 450; }
-                $self.bar.width(w);
+                $self.bar.width($self.getMainBarWidth());
             },
             
             // Log the user out and hide frontadmin
@@ -147,25 +150,27 @@ $(function(){
 
             // toggle frontadmin ui
             onToggleToolbar: function(e){
-                $('html').toggleClass('frontadmin-show-toolbars');
-                var show = $('html').hasClass('frontadmin-show-toolbars');
-                $(this)[show && 'addClass' || 'removeClass']('active');
-                $self.cookie('frontadmin_toolbars_visibles', show && 'true' || 'false');
-                $self.states.toolbars_visibles = show;
-                $self.cookie('frontadmin_toolbars_visibles', show && true || false);
-                return false;
-            },
-
-            onToggleBar: function(e){
                 var bar = $('#frontadmin-bar-frame');
+                var html    = $('html').toggleClass('frontadmin-show-toolbars');
+                var visible = html.hasClass('frontadmin-show-toolbars');
+
+                // Toggle main toolbar
                 if (bar.hasClass('minimized')) {
-                    var w =  parseInt($(document).width() / 3);
-                    if (w < 450) { w = 450; }
+                    var w = $self.getMainBarWidth();
                     bar.removeClass('minimized').animate({width: w}).fadeTo('fast', 1.0);
                 }
                 else {
                     bar.addClass('minimized').animate({width: 36}).fadeTo('fast', 0.5);
                 }
+
+                // Toggle each inline toolbars                
+                $self.cookie('frontadmin_toolbars_visibles', visible && 'true' || 'false');
+                $self.states.toolbars_visibles = visible;
+                $self.cookie('frontadmin_toolbars_visibles', visible && true || false);
+
+                // Set the button's state
+                $(this)[visible && 'addClass' || 'removeClass']('active')
+                    .text(visible && '–' || '+');
                 return false;
             },
 
@@ -416,8 +421,16 @@ $(function(){
         return {
             init: function() {
                 $('html').addClass('frontadmin');
-                $self.events.onWindowResize();
+                $self.bar.show();
                 $(window).resize($self.events.onWindowResize);
+
+                if ($self.states.toolbars_visibles) {
+                    $self.bar.removeClass('minimized').fadeTo('fast', 1.0);
+                    $self.events.onWindowResize();
+                }
+                else {
+                    $self.bar.addClass('minimized').width(36).fadeTo('fast', 0.5);
+                }
 
                 // Little trick to load iframe content locally
                 $self.bar.add($self.toolbars).each(function(){
