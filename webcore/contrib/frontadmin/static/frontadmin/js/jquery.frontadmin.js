@@ -394,10 +394,10 @@ $(function(){
             if ($('html').hasClass('frontadmin-show-toolbars')) {
                 doc.find($self.buttons.toggle).addClass('active');
             }
+            doc.find($self.buttons.changeObject).bind('click.frontadmin2', $self.events.onObjectChange).end();
             doc.find($self.buttons.logout).bind('click.frontadmin', $self.events.onLogout).end()
                .find($self.buttons.toggle).bind('click.frontadmin', $self.events.onToggleToolbar).end()
                .find($self.buttons.toggleBar).bind('click.frontadmin', $self.events.onToggleBar).end()
-               .find($self.buttons.changeObject).bind('click.frontadmin',  $self.events.onObjectChange).end();
         }
         
         $self.bindToolbarEvents = function(toolbar) {
