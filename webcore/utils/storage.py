@@ -2,7 +2,7 @@ import os, unicodedata
 
 from django.core.files.storage import FileSystemStorage
 from django.db.models.fields.files import FileField
-from webcore.utils.debug import brake
+from django.core.files.storage import default_storage
 
 
 def file_cleanup(sender, **kwargs):
@@ -30,7 +30,8 @@ def file_cleanup(sender, **kwargs):
                 and not m.filter(**{'%s__exact' % fieldname: getattr(inst, fieldname)})\
                 .exclude(pk=inst._get_pk_val()):
                     try:
-                        os.remove(f.path)
+                        #os.remove(f.path)
+                        default_storage.delete(f.path)
                     except:
                         pass
 
