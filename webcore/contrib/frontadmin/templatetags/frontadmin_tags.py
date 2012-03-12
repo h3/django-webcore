@@ -80,13 +80,30 @@ class CaptureasNode(template.Node):
         self.obj = template.Variable(obj)
         self.request = template.Variable(request)
 
+    def _has_perm(self, request, var):
+        if not request.user:
+            return False
+        elif not request.user.is_authenticated():
+            return False
+        elif isinstance(var, SafeUnicode):
+            app = var.split('.')[0].lower()
+            model = var.split('.')[1].lower()
+            return request.user.has_perm("%s.add_%s" % (app, model)) and \
+                   request.user.has_perm("%s.change_%s" % (app, model)) and \
+                   request.user.has_perm("%s.delete_%s" % (app, model))
+        else:
+            app = var._meta.app_label.lower()
+            model = var._meta.object_name.lower().lower()
+            return request.user.has_perm("%s.add_%s" % (app, model)) and \
+                   request.user.has_perm("%s.change_%s" % (app, model)) and \
+                   request.user.has_perm("%s.delete_%s" % (app, model))
+
     def render(self, context):
         var = self.obj.resolve(context)
         request = self.request.resolve(context)
-       #context['toolbar'] = frontadmin_toolbar(request, var)
         output = self.nodelist.render(context)
 
-        if not request.user or not request.user.is_authenticated():
+        if not self._has_perm(request, var):
             return output
 
         if isinstance(var, SafeUnicode):
