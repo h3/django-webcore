@@ -134,15 +134,9 @@ $(function(){
             // Log the user out and hide frontadmin
             onLogout: function(e){
                 $.get($(this).attr('href'), function(){
-                    $self.toolbars.each(function(){
-                        var wrapper = $(this).parents('.front-admin-block');
-                        wrapper.find('.frontadmin-toolbar-frame').slideUp('fast', function(){
-                                $(this).remove();
-                            }).end().find('*').unwrap();
-                        wrapper.remove();
-                    })
                     $self.bar.slideDown('fast', function(){
                         $(this).remove();
+                        window.location.reload();
                     })
                 })
                 return false;
