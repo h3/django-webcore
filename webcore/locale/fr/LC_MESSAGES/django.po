@@ -1,0 +1,137 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-03-13 15:06-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+
+#: contrib/frontadmin/templates/frontadmin/bar.inc.html:5
+msgid "Hide administration toolbars"
+msgstr "Cacher la barre d'administration"
+
+#: contrib/frontadmin/templates/frontadmin/bar.inc.html:7
+msgid "Logged in as "
+msgstr "Connecté en tant que "
+
+#: contrib/frontadmin/templates/frontadmin/bar.inc.html:9
+#: contrib/frontadmin/templates/frontadmin/bar.inc.html:11
+msgid "Modify your profile"
+msgstr "Modifier votre profile"
+
+#: contrib/frontadmin/templates/frontadmin/bar.inc.html:14
+msgid "Disconnect"
+msgstr "Se déconnecter"
+
+#: contrib/frontadmin/templates/frontadmin/bar.inc.html:15
+#: contrib/frontadmin/templates/frontadmin/toolbar.inc.html:9
+msgid "Edit in admin"
+msgstr "Editer dans l'admin"
+
+#: contrib/frontadmin/templates/frontadmin/bar.inc.html:15
+#: contrib/frontadmin/templates/frontadmin/toolbar.inc.html:9
+#: contrib/frontadmin/templates/frontadmin/toolbar.inc.html:12
+msgid "Admin"
+msgstr "Admin"
+
+#: contrib/frontadmin/templates/frontadmin/toolbar.inc.html:7
+msgid "Delete"
+msgstr "Effacer"
+
+#: contrib/frontadmin/templates/frontadmin/toolbar.inc.html:8
+#: contrib/frontadmin/templates/frontadmin/toolbar.inc.html:13
+msgid "Edit"
+msgstr "Editer"
+
+#: contrib/frontadmin/templates/frontadmin/toolbar.inc.html:10
+msgid "View change history"
+msgstr "Voir l'historique des changements"
+
+#: contrib/frontadmin/templates/frontadmin/toolbar.inc.html:10
+msgid "History"
+msgstr "Historique"
+
+#: contrib/frontadmin/templates/frontadmin/toolbar.inc.html:12
+msgid "Modify in admin"
+msgstr "Modifier dans l'admin"
+
+#: contrib/frontadmin/templates/frontadmin/toolbar.inc.html:13
+msgid "Modify in place"
+msgstr "Modifié ici"
+
+#: design/goldengridsystem/templates/goldengridsystem/base.dist.html:42
+#: design/html5boilerplate/templates/html5boilerplate/base.dist.html:42
+msgid "All rights reserved"
+msgstr "Tous droits réservés"
+
+#: navigation/admin.py:74
+msgid "Add child Nav"
+msgstr "Ajouter sous navigation"
+
+#: navigation/admin.py:74
+msgid "Add child nav"
+msgstr "Ajouter sous navigation"
+
+#: navigation/admin.py:75
+msgid "Open link"
+msgstr "Ouvrir le lien"
+
+#: navigation/admin.py:125 navigation/tree_editor.py:397
+#, python-format
+msgid "%s has been moved to a new position."
+msgstr "%s a été bougé à une nouvelle position."
+
+#: navigation/admin.py:129 navigation/tree_editor.py:401
+msgid "Did not understand moving instruction."
+msgstr "Instruction de déplacement non comprise."
+
+#: navigation/tree_editor.py:219
+msgid "title"
+msgstr "titre"
+
+#: navigation/tree_editor.py:410
+msgid "actions"
+msgstr "actions"
+
+#: navigation/templates/navigation/tree_editor.html:26
+msgid "Shortcuts"
+msgstr "Raccourcis"
+
+#: navigation/templates/navigation/tree_editor.html:28
+msgid "Collapse tree"
+msgstr "Refermer l'arborescence"
+
+#: navigation/templates/navigation/tree_editor.html:29
+msgid "Expand tree"
+msgstr "Ouvrir l'arborescence"
+
+#: navigation/templates/navigation/tree_editor.html:32
+msgid "Filter"
+msgstr "Filtrer"
+
+#: templates/pagination.html:5
+msgid "Previous page"
+msgstr "Page précédente"
+
+#: templates/pagination.html:5
+msgid "Prev"
+msgstr "Préc"
+
+#: templates/pagination.html:28
+msgid "Next page"
+msgstr "Page suivante"
+
+#: templates/pagination.html:28
+msgid "Next"
+msgstr "Suivante"
