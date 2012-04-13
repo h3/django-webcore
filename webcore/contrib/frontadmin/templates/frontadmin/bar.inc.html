@@ -1,8 +1,15 @@
+{% spaceless %}
 {% if user.is_authenticated and user.is_staff %}
 {% load i18n %}
 <iframe id="frontadmin-bar-frame" style="display:none;">
 <div class="frontadmin-bar">
-    <a id="frontadmin-btn-toggle" href="#toggle" title="{% trans "Hide administration toolbars" %}" class="button blue">&ndash;</a>
+    <a  id="frontadmin-btn-toggle" 
+        href="#toggle" 
+        title="{% trans "Hide administration toolbars" %}" 
+        data-title="{% trans "Hide administration toolbars" %}" 
+        data-title-collapsed="{% trans "Show administration toolbars" %}" 
+        class="button blue
+    ">&ndash;</a>
     <span>
         {% trans "Logged in as " %} 
         {% if user.first_name or user.last_name %}
@@ -21,3 +28,4 @@
 <style>{% include "frontadmin/bar.inc.css" %}</style>
 </iframe>
 {% endif %}
+{% endspaceless %}

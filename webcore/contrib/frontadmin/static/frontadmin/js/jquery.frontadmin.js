@@ -51,10 +51,59 @@ $(function(){
             else   { return $.cookie(k,    {path: '/'}); }
         };
 
+        $self.closeActiveFrame = function() {
+            if (!$self.states.active_frame.hasClass('modified') || confirm('Close and discard modifications ?')) {
+                $self.states.active_frame.parent().fadeOut(function(){
+                    $self.states.active_frame.parent().remove();
+                    $self.states.active_frame = false;
+                })
+            }
+        };
+
+        $self.hide = function(src) {
+            var src = $(src),
+                html = $('html'),
+                bar = $('#frontadmin-bar-frame'),
+                visible = html.hasClass('frontadmin-show-toolbars');
+
+            if (!visible) { return true; }
+
+            $self.states.toolbars_visibles = false;
+            $self.cookie('frontadmin_toolbars_visibles', 'false');
+            html.removeClass('frontadmin-show-toolbars');
+
+            src.removeClass('active')
+                  .attr('title', src.data('title-collapsed'))
+                  .text('+');
+
+            bar.addClass('minimized').animate({width: 36}).css('opacity', 0.5);
+
+        };
+
+        $self.show = function(src) {
+            var src = $(src),
+                html = $('html'),
+                bar = $('#frontadmin-bar-frame'),
+                visible = html.hasClass('frontadmin-show-toolbars');
+
+            if (visible) { return true; }
+
+            $self.states.toolbars_visibles = true;
+            $self.cookie('frontadmin_toolbars_visibles', 'true');
+            html.addClass('frontadmin-show-toolbars');
+
+            src.addClass('active')
+                  .attr('title', src.data('title'))
+                  .text('-');
+
+            bar.removeClass('minimized').animate({
+                width: $self.getMainBarWidth()}).css('opacity', 1.0);
+        };
+
         // frontadmin toolbar initial state
         if ($self.cookie('frontadmin_toolbars_visibles') == null) { 
             // Cookie does not exist, set it and show the toolbar by default
-            $self.cookie('frontadmin_toolbars_visibles', true)
+            $self.cookie('frontadmin_toolbars_visibles', 'true')
             $self.states.toolbars_visibles = true;
         }
         else if ($self.cookie('frontadmin_toolbars_visibles') == 'true') {
@@ -63,15 +112,15 @@ $(function(){
         else {
             $self.states.toolbars_visibles = false;
         }
-
-        $self.closeActiveFrame = function() {
-            if (!$self.states.active_frame.hasClass('modified') || confirm('Close and discard modifications ?')) {
-                $self.states.active_frame.parent().fadeOut(function(){
-                    $self.states.active_frame.parent().remove();
-                    $self.states.active_frame = false;
-                })
+        $('#frontadmin-bar-frame').load(function(){
+            var a = $(this).contents().find('#frontadmin-btn-toggle');
+            if ($self.states.toolbars_visibles == true) {
+                $self.show(a);
             }
-        }
+            else {
+                $self.hide(a);
+            }
+        });
 
         // Remove toolbars and useless stuff in window mode
         $self.cleanDocument = function(d) {
@@ -144,27 +193,12 @@ $(function(){
 
             // toggle frontadmin ui
             onToggleToolbar: function(e){
-                var bar = $('#frontadmin-bar-frame');
-                var html    = $('html').toggleClass('frontadmin-show-toolbars');
-                var visible = html.hasClass('frontadmin-show-toolbars');
-
-                // Toggle main toolbar
-                if (bar.hasClass('minimized')) {
-                    var w = $self.getMainBarWidth();
-                    bar.removeClass('minimized').animate({width: w}).fadeTo('fast', 1.0);
+                var visible = $('html').hasClass('frontadmin-show-toolbars');
+                if (visible) {
+                    $self.hide(this) 
+                } else {
+                    $self.show(this);
                 }
-                else {
-                    bar.addClass('minimized').animate({width: 36}).fadeTo('fast', 0.5);
-                }
-
-                // Toggle each inline toolbars                
-                $self.cookie('frontadmin_toolbars_visibles', visible && 'true' || 'false');
-                $self.states.toolbars_visibles = visible;
-                $self.cookie('frontadmin_toolbars_visibles', visible && true || false);
-
-                // Set the button's state
-                $(this)[visible && 'addClass' || 'removeClass']('active')
-                    .text(visible && '–' || '+');
                 return false;
             },
 
