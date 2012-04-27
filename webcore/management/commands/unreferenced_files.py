@@ -1,23 +1,32 @@
 from collections import defaultdict
 import os
 from django.conf import settings
-from django.core.management.base import NoArgsCommand
+from django.core.management.base import BaseCommand
 from django.db import models
 from django.db.models.loading import cache
+from optparse import make_option
 
 def walk(top_dir, ignore):
     for dirpath, dirnames, filenames in os.walk(top_dir):
         dirnames[:] = [dn for dn in dirnames if dn not in ignore]
         yield dirpath, dirnames, filenames
 
-class Command(NoArgsCommand):
+class Command(BaseCommand):
     help = "Prints a list of all files in MEDIA_ROOT that are not referenced in the database."
 
-    def handle_noargs(self, **options):
+    option_list = BaseCommand.option_list + (
+            make_option('-d',
+                action = 'store_true',
+                help = 'delete files'),
+            )
+
+    def handle(self,*args, **options):
 
         if settings.MEDIA_ROOT == '':
             print "MEDIA_ROOT is not set, nothing to do"
             return
+
+        delete_ = options.get('d')
 
         # Get a list of all files under MEDIA_ROOT
         media = []
@@ -38,15 +47,16 @@ class Command(NoArgsCommand):
         # Get a list of all files referenced in the database
         referenced = []
         for model in model_dict.iterkeys():
-            all = model.objects.all().iterator()
+            all = model.objects.all()#.iterator()
             for object in all:
                 for field in model_dict[model]:
                     target_file = getattr(object, field.name)
                     if target_file:
-                        referenced.append(os.path.abspath(target_file.path))
+                       referenced.append(os.path.abspath(target_file.path))
 
-        # Print each file in MEDIA_ROOT that is not referenced in the database
+       # Print each file in MEDIA_ROOT that is not referenced in the database
         for m in media:
             if m not in referenced:
                 print m
-
+                if delete_:
+                    os.remove(m)
